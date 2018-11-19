@@ -1,0 +1,232 @@
+{{> header title="Admin" }}
+
+<body class="text-center">
+  
+  {{> nav }}
+  
+  <div class="container mt-3">
+    <div class="col-xl-10 offset-xl-1 text-center">
+      
+      {{> flash }}
+      
+      <div class="row mt-3 mb-3">
+        <a href="/admin" class="btn confirmed-blue-btn btn-sm">Back to Admin</a>
+      </div>
+      
+      <h3>Client Management</h3>
+      
+      <div class="row mt-4">
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <div class="row">
+            <div class="col-xl-6 col-xs-12 mt-1 mb-4">
+              <h1 class="h6"><strong>Mac App</strong></h1>
+              <form id="macAppPercentForm" action="/modify-percent" method="post">
+                <table class="mt-3 mb-3" style="width:100%">
+                {{#each clients.mac-app}}
+                  <tr>
+                    <td width="40%">
+                      <div class="">
+                        {{ this.filename }}
+                      </div>
+                    </td>
+                    <td width="40%">
+                      <div class="" style="font-size: 12px;">
+                        {{ this.modified }}
+                      </div>
+                    </td>
+                    <td width="20%">
+                      <div class="">
+                        <input type="text" id="{{this.id}}" name="{{this.key}}" class="text-right" style="width: 40px;" value="{{ this.percent }}" placeholder="%"/>%
+                      </div>
+                    </td>
+                  </tr>
+                {{/each}}
+                </table>
+                <input type="submit" class="btn confirmed-blue-btn btn-block" value="Save Percentages">
+              </form>
+              <hr/>
+              <h6 class="mt-2 mb-3">Upload Mac App</h6>
+              <form id="macAppUploadForm" enctype="multipart/form-data" action="/upload-client" method="post">
+                <input type="file" name="file"/>
+                <input type="hidden" name="type" value="mac-app"/>
+                <input type="submit" class="btn confirmed-blue-btn" value="Upload" name="submit">
+                <span id="macAppStatus"></span>
+              </form>
+            </div>
+            <div class="col-xl-6 col-xs-12 mt-1 mb-4">
+              <h1 class="h6"><strong>Mac Update</strong></h1>
+              <form id="macUpdatePercentForm" action="/modify-percent" method="post">
+                <table class="mt-3 mb-3" style="width:100%">
+                {{#each clients.mac-update}}
+                  <tr>
+                    <td width="40%">
+                      <div class="">
+                        {{ this.filename }}
+                      </div>
+                    </td>
+                    <td width="40%">
+                      <div class="" style="font-size: 12px;">
+                        {{ this.modified }}
+                      </div>
+                    </td>
+                    <td width="20%">
+                      <div class="">
+                        <input type="text" id="{{this.id}}" name="{{this.key}}" class="text-right" style="width: 40px;" value="{{ this.percent }}" placeholder="%"/>%
+                      </div>
+                    </td>
+                  </tr>
+                {{/each}}
+                </table>
+                <input type="submit" class="btn confirmed-blue-btn btn-block" value="Save Percentages">
+              </form>
+              <hr/>
+              <h6 class="mt-2 mb-3">Upload Mac Update</h6>
+              <form id="macUpdateUploadForm" enctype="multipart/form-data" action="/upload-client" method="post">
+                <input type="file" name="file"/>
+                <input type="hidden" name="type" value="mac-update"/>
+                <input type="submit" class="btn confirmed-blue-btn" value="Upload" name="submit">
+                <span id="macUpdateStatus"></span>
+              </form>
+            </div>
+          </div>
+  			</div>
+      </div>
+      
+      <div class="row mt-3 mb-5 pb-4">
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <div class="row">
+            <div class="col-xl-6 col-xs-12 mt-1 mb-4">
+              <h1 class="h6"><strong>Windows App</strong></h1>
+              <form id="windowsAppPercentForm" action="/modify-percent" method="post">
+                <table class="mt-3 mb-3" style="width:100%">
+                {{#each clients.windows-app}}
+                  <tr>
+                    <td width="40%">
+                      <div class="">
+                        {{ this.filename }}
+                      </div>
+                    </td>
+                    <td width="40%">
+                      <div class="" style="font-size: 12px;">
+                        {{ this.modified }}
+                      </div>
+                    </td>
+                    <td width="20%">
+                      <div class="">
+                        <input type="text" id="{{this.id}}" name="{{this.key}}" class="text-right" style="width: 40px;" value="{{ this.percent }}" placeholder="%"/>%
+                      </div>
+                    </td>
+                  </tr>
+                {{/each}}
+                </table>
+                <input type="submit" class="btn confirmed-blue-btn btn-block" value="Save Percentages">
+              </form>
+              <hr/>
+              <h6 class="mt-2 mb-3">Upload Windows App</h6>
+              <form id="windowsAppUploadForm" enctype="multipart/form-data" action="/upload-client" method="post">
+                <input type="file" name="file"/>
+                <input type="hidden" name="type" value="windows-app"/>
+                <input type="submit" class="btn confirmed-blue-btn" value="Upload" name="submit">
+                <span id="windowsAppStatus"></span>
+              </form>
+            </div>
+            <div class="col-xl-6 col-xs-12 mt-1 mb-4">
+              <h1 class="h6"><strong>Windows Update</strong></h1>
+              <form id="windowsUpdatePercentForm" action="/modify-percent" method="post">
+                <table class="mt-3 mb-3" style="width:100%">
+                {{#each clients.windows-update}}
+                  <tr>
+                    <td width="40%">
+                      <div class="">
+                        {{ this.filename }}
+                      </div>
+                    </td>
+                    <td width="40%">
+                      <div class="" style="font-size: 12px;">
+                        {{ this.modified }}
+                      </div>
+                    </td>
+                    <td width="20%">
+                      <div class="">
+                        <input type="text" id="{{this.id}}" name="{{this.key}}" class="text-right" style="width: 40px;" value="{{ this.percent }}" placeholder="%"/>%
+                      </div>
+                    </td>
+                  </tr>
+                {{/each}}
+                </table>
+                <input type="submit" class="btn confirmed-blue-btn btn-block" value="Save Percentages">
+              </form>
+              <hr/>
+              <h6 class="mt-2 mb-3">Upload Windows Update</h6>
+              <form id="windowsUpdateUploadForm" enctype="multipart/form-data" action="/upload-client" method="post">
+                <input type="file" name="file"/>
+                <input type="hidden" name="type" value="windows-update"/>
+                <input type="submit" class="btn confirmed-blue-btn" value="Upload" name="submit">
+                <span id="windowsUpdateStatus"></span>
+              </form>
+            </div>
+          </div>
+  			</div>
+      </div>
+  
+    </div> <!-- column -->
+  </div> <!-- row -->
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+  
+  <script>
+    $(document).ready(function() {
+      $('#macAppUploadForm').submit(function() {
+        $("#macAppStatus").empty().text("Uploading...");
+        $(this).ajaxSubmit({
+          error: function(xhr) {
+            alert('Error: ' + xhr.status);
+          },
+          success: function(response) {
+            $("#macAppStatus").empty().text(response);
+          }
+        });
+        return false;
+      });    
+      $('#macUpdateUploadForm').submit(function() {
+        $("#macUpdateStatus").empty().text("Uploading...");
+        $(this).ajaxSubmit({
+          error: function(xhr) {
+            alert('Error: ' + xhr.status);
+          },
+          success: function(response) {
+            $("#macUpdateStatus").empty().text(response);
+          }
+        });
+        return false;
+      });
+      $('#windowsAppUploadForm').submit(function() {
+        $("#windowsAppStatus").empty().text("Uploading...");
+        $(this).ajaxSubmit({
+          error: function(xhr) {
+            alert('Error: ' + xhr.status);
+          },
+          success: function(response) {
+            $("#windowsAppStatus").empty().text(response);
+          }
+        });
+        return false;
+      });
+      $('#windowsUpdateUploadForm').submit(function() {
+        $("#windowsUpdateStatus").empty().text("Uploading...");
+        $(this).ajaxSubmit({
+          error: function(xhr) {
+            alert('Error: ' + xhr.status);
+          },
+          success: function(response) {
+            $("#windowsUpdateStatus").empty().text(response);
+          }
+        });
+        return false;
+      });
+    });
+  </script>
+  
+</body>

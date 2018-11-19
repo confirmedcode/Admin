@@ -1,0 +1,155 @@
+{{> header title="Admin" }}
+
+<body class="text-center">
+  
+  {{> nav }}
+  
+  <div class="container mt-3">
+    <div class="col-xl-10 offset-xl-1 text-left">
+      
+      {{> flash }}
+      
+      <div class="row mt-3 mb-3">
+        <a href="/admin" class="btn confirmed-blue-btn btn-sm">Back to Admin</a>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <span style="display: none;">{{certAccessSecret}}</span> <!-- intentionally have Admin use inspect element to view this -->
+          <form id="toggle-secret-form" action="/toggle-secret" method="POST">
+            <h5>
+              Certificate Access:
+              {{#if secretEnabled}}
+              ENABLED
+              {{else}}
+              DISABLED
+              {{/if}}
+            </h5>
+            <button id="toggleSecretButton" type="submit" class="btn confirmed-blue-btn btn-sm text-white mt-2">Click to Toggle</button>
+          </form>
+  			</div>
+      </div>
+
+      <div class="row mt-3 mb-5 pb-4">
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <h1 class="h5"><strong>Sources</strong></h1>
+          <table class="mt-3 mb-3" style="width:100%">
+          {{#each sources}}
+            <tr>
+              <td width="10%">
+                <div class="confirmed-blue">
+                  {{ this.id }}
+                </div>
+              </td>
+              <td width="15%">
+                <div class="">
+                  {{ this.createDateString }}
+                </div>
+              </td>
+              <td width="20%">
+                {{#if this.isCurrent}}
+                <span class="badge badge-secondary">Current Source</span>
+                {{else}}
+                <button id="source{{this.id}}" onclick="setCurrentSource('{{this.id}}')" class="btn confirmed-gray-btn btn-sm">Set Current</button>
+                {{/if}}
+              </td>
+              <td width="25%">
+                <button id="unassigned{{this.id}}" onclick="getUnassigned('{{this.id}}')" class="btn confirmed-blue-btn btn-sm">Get # Unassigned Certificates</button>
+              </td>
+              <td width="30%">
+                <input type="text" id="num{{this.id}}" style="width: 30%;" placeholder="# IDs"/>
+                <button id="generate{{this.id}}" onclick="generateCertificates('{{this.id}}')" class="btn confirmed-blue-btn btn-sm">Generate Certificates</button>
+              </td>
+            </tr>
+          {{/each}}
+          </table>
+          <hr/>
+          <form id="new-source-form" action="/new-source" method="POST">
+            <h5>Create New Source</h5>
+            <input type="text" id="id" name="id" class="form-control mb-2 text-center" form="new-source-form" placeholder="Alphanumeric, 1-25 characters."/>
+            <button id="newSourceButton" type="submit" class="btn confirmed-blue-btn btn-sm text-white btn-block mt-2">Create New Source</button>
+          </form>
+  			</div>
+      </div>
+  
+    </div> <!-- column -->
+  </div> <!-- row -->
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+  
+  <script>
+    
+    function setCurrentSource(id) {
+      if (confirm("Are you sure you want to set \"" + id + "\" as the current source? You'll need to restart all Main AND Helper instances to pick up the change.")) {
+        document.getElementById("source" + id).disabled = true;
+    		var http = new XMLHttpRequest();
+    		var url = "set-current-source";
+    		var params = "id=" + id
+    		http.open("POST", url, true);
+        http.responseType = 'json';
+    		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    		http.onreadystatechange = function() {
+    		    if (http.readyState == 4) {
+      				if (http.status == 200) {
+                location.reload()
+                return;
+      				}
+              alert("Error: " + JSON.stringify(http.response));
+    		    }
+    		}
+    		http.send(params);
+      }
+    }
+    
+    function generateCertificates(id) {
+      if (confirm("Are you sure you want to generate certs for \"" + id + "\"?")) {
+        document.getElementById("generate" + id).disabled = true;
+    		var http = new XMLHttpRequest();
+    		var url = "generate-certificates";
+    		var params = "id=" + id + "&num=" + document.getElementById("num" + id).value
+    		http.open("POST", url, true);
+        http.responseType = 'json';
+    		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    		http.onreadystatechange = function() {
+    		    if (http.readyState == 4) {
+      				if (http.status == 200) {
+                document.getElementById("generate" + id).disabled = false;
+                document.getElementById("num" + id).value = null;
+                alert("Generation started.");
+                return;
+      				}
+      				alert("Error: " + JSON.stringify(http.response));
+    		    }
+    		}
+    		http.send(params);
+      } 
+    }
+    
+    function getUnassigned(id) {
+      document.getElementById("unassigned" + id).disabled = true;
+  		var http = new XMLHttpRequest();
+  		var url = "get-unassigned-certificates";
+  		var params = "id=" + id;
+  		http.open("POST", url, true);
+      http.responseType = 'json';
+  		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  		http.onreadystatechange = function() {
+		    if (http.readyState == 4) {
+  				if (http.status == 200) {
+            document.getElementById("unassigned" + id).disabled = false;
+            document.getElementById("unassigned" + id).innerText = http.response.count + " Unassigned Certificates";
+            return;
+  				}
+  				else {
+            document.getElementById("unassigned" + id).disabled = false;
+            alert("Error: " + JSON.stringify(http.response));
+  				}
+		    }
+  		}
+  		http.send(params);
+    }
+  </script>
+  
+</body>

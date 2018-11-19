@@ -1,0 +1,69 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  font-family: Roboto, "Open Sans", "Segoe UI", sans-serif;
+  margin-bottom: 44px;
+  background-color: white;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 44px; /* Set the fixed height of the footer here */
+  line-height: 44px; /* Vertically center the text there */
+}
+
+.confirmed-bg {
+  background: rgba(18, 91, 152, 0.05);
+}
+
+.confirmed-blue {
+  color: #3498db !important;
+}
+
+.confirmed-blue-bg {
+  background-color: #3498db !important;
+}
+
+.confirmed-blue-border {
+  border-color: #3498db !important;
+}
+
+.confirmed-blue-btn {
+  background-color: #3498db !important;
+  color: white;
+  height: 32px;
+  line-height: 20px;
+  font-size: 12px !important;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.confirmed-gray-btn {
+  background-color: #aaa !important;
+  color: white;
+  height: 32px;
+  line-height: 20px;
+  font-size: 12px !important;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.confirmed-red-btn {
+  background-color: #e74c3c !important;
+  color: white;
+  height: 32px;
+  line-height: 20px;
+  font-size: 12px !important;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.input {
+  font-size: 14px !important;
+}
+
+.form-control {
+  font-size: 14px !important;
+}

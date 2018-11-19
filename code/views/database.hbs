@@ -1,0 +1,144 @@
+{{> header title="Admin" }}
+
+<body class="text-center">
+  
+  {{> nav }}
+  
+  <div class="container mt-3">
+    <div class="col-xl-10 offset-xl-1 text-left">
+      
+      {{> flash }}
+      
+      <div class="row mt-3 mb-3">
+        <a href="/admin" class="btn confirmed-blue-btn btn-sm">Back to Admin</a>
+      </div>
+      
+      <div class="row mt-3">
+        
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <h1 class="h6 text-center"><strong>Postgres Console</strong></h1>
+          <div>
+            <input type="text" id="postgresCommand" class="form-control" placeholder="SELECT count(*) FROM ..."/>
+            <textarea rows="12" type="text" id="postgresResult" class="form-control mt-2"></textarea>
+            <button id="postgresCommandButton" onclick="postgresCommand();" class="btn confirmed-blue-btn btn-sm mt-2" style="width: 50%;">Submit</button>
+          </div>
+        </div>
+
+<!--        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <h1 class="h6 text-center"><strong>Redis Console</strong></h1>
+          <div>
+            <input type="text" id="redisCommand" class="form-control" placeholder="Command e.g, KEYS"/>
+            <input type="text" id="redisArguments" class="form-control" placeholder="Comma separated arguments"/>
+            <textarea rows="12" type="text" id="redisResult" class="form-control mt-2"></textarea>
+            <button id="redisCommandButton" onclick="redisCommand();" class="btn confirmed-blue-btn btn-sm mt-2" style="width: 50%;">Submit</button>
+          </div>
+        </div> -->
+        
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <h1 class="h6 text-center"><strong>Get Brute for IP</strong></h1>
+          <div>
+            <input type="text" id="getBruteIp" class="form-control" placeholder="IP e.g, 1.2.3.4"/>
+            <textarea rows="12" type="text" id="getBruteResult" class="form-control mt-2"></textarea>
+            <button id="getBruteButton" onclick="getBrute();" class="btn confirmed-blue-btn btn-sm mt-2" style="width: 50%;">Submit</button>
+          </div>
+        </div>
+        
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <h1 class="h6 text-center"><strong>Clear Brute for IP</strong></h1>
+          <div>
+            <input type="text" id="clearBruteIp" class="form-control" placeholder="IP e.g, 1.2.3.4"/>
+            <textarea rows="1" type="text" id="clearBruteResult" class="form-control mt-2"></textarea>
+            <button id="clearBruteButton" onclick="clearBrute();" class="btn confirmed-blue-btn btn-sm mt-2" style="width: 50%;">Submit</button>
+          </div>
+        </div>
+
+      </div>
+  
+    </div> <!-- column -->
+  </div> <!-- row -->
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+  
+  <script>
+    
+    function postgresCommand() {
+      var http = new XMLHttpRequest();
+      var url = "postgres-command";
+      http.open("POST", url, true);
+      var params = "command=" + encodeURIComponent(document.getElementById("postgresCommand").value);
+      http.responseType = 'json';
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.onreadystatechange = function() {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            document.getElementById("postgresResult").value = http.response.message;
+            return;
+          }
+          alert("Error: " + JSON.stringify(http.response));
+        }
+      }
+      http.send(params);
+    }
+    
+    // function redisCommand() {
+    //       var http = new XMLHttpRequest();
+    //       var url = "redis-command";
+    //       http.open("POST", url, true);
+    //   var params = "command=" + encodeURIComponent(document.getElementById("redisCommand").value) + "&arguments=" + encodeURIComponent(document.getElementById("redisArguments").value);
+    //   http.responseType = 'json';
+    //       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    //       http.onreadystatechange = function() {
+    //           if (http.readyState == 4) {
+    //         if (http.status == 200) {
+    //           document.getElementById("redisResult").value = http.response.message;
+    //           return;
+    //         }
+    //         alert("Error: " + JSON.stringify(http.response));
+    //           }
+    //       }
+    //       http.send(params);
+    // }
+    
+    function getBrute() {
+  		var http = new XMLHttpRequest();
+  		var url = "get-brute";
+  		http.open("POST", url, true);
+    	var params = "ip=" + encodeURIComponent(document.getElementById("getBruteIp").value);
+      http.responseType = 'json';
+  		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  		http.onreadystatechange = function() {
+  		    if (http.readyState == 4) {
+    				if (http.status == 200) {
+              document.getElementById("getBruteResult").value = http.response.message;
+              return;
+    				}
+            alert("Error: " + JSON.stringify(http.response));
+  		    }
+  		}
+  		http.send(params);
+    }
+    
+    function clearBrute() {
+  		var http = new XMLHttpRequest();
+  		var url = "clear-brute";
+  		http.open("POST", url, true);
+    	var params = "ip=" + encodeURIComponent(document.getElementById("clearBruteIp").value);
+      http.responseType = 'json';
+  		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  		http.onreadystatechange = function() {
+  		    if (http.readyState == 4) {
+    				if (http.status == 200) {
+              document.getElementById("clearBruteResult").value = http.response.message;
+              return;
+    				}
+            alert("Error: " + JSON.stringify(http.response));
+  		    }
+  		}
+  		http.send(params);
+    }
+    
+  </script>
+  
+</body>
