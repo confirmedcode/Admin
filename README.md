@@ -571,6 +571,15 @@ Status 200
 }
 ```
 
-## Support
+## Feedback
+If you have any questions, concerns, or other feedback, please let us know any feedback in Github issues or by e-mail.
+
+We also have a bug bounty program that can be found here: https://hackerone.com/confirmed_inc
+
+## License
+
+This project is licensed under the GPL License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Contact
 
 <engineering@confirmedvpn.com>
