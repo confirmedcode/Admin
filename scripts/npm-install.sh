@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Upgrade Node
-sudo apt-get install -y nodejs
-
 cd /home/node/admin
 git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
