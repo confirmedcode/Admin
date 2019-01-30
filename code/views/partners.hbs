@@ -1,0 +1,265 @@
+{{> header title="Admin" }}
+
+<body class="text-center">
+  
+  {{> nav }}
+  
+  <div class="container mt-3">
+    <div class="col-xl-10 offset-xl-1 text-left">
+      
+      {{> flash }}
+      
+      <div class="row mt-3 mb-3">
+        <a href="/admin" class="btn confirmed-blue-btn btn-sm">Back to Admin</a>
+      </div>
+
+      <div class="row mt-3 mb-2 pb-4">
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <h1 class="h5"><strong>Partners</strong></h1>
+          <table class="mt-3 mb-3" style="width:100%">
+          {{#each partners}}
+            <tr>
+              <td width="10%">
+                ID: {{ this.id }}
+              </td>
+              <td width="20%">
+                {{ this.title }}
+              </td>
+              <td width="10%">
+                {{ this.code }}
+              </td>
+              <td width="20%">
+                Their Share: {{ this.percentageShare }}%
+              </td>
+              <td width="40%">
+                <button id="getCurrent{{this.code}}" onclick="getCurrent('{{this.code}}')" class="btn confirmed-blue-btn btn-sm">Get Summary</button>
+                <button id="saveSnapshot{{this.code}}" onclick="saveSnapshot('{{this.code}}')" class="btn confirmed-blue-btn btn-sm">Save Snapshot</button>
+                <button id="partner{{this.id}}" onclick="deletePartner('{{this.id}}')" class="btn confirmed-red-btn btn-sm">Delete Partner</button>
+              </td>
+            </tr>
+          {{/each}}
+          </table>
+          <div id="summaryResult" class="mb-4" style="display:none;">
+            <hr/>
+            <h1 class="h5 mt-2 text-left"><strong>Current Month For <span id="summaryResultCode"></span></strong></h1>
+            <p class="mb-2 text-left" id="summaryResultText"></p>
+          </div>
+          <hr/>
+          <form id="new-partner-form" action="/new-partner" method="POST">
+            <h5>New Partner</h5>
+            <table class="mt-3 mb-2" style="width:100%">
+              <tr>
+                <td width="33%">
+                  <input type="text" id="newPartnerTitle" name="newPartnerTitle" class="form-control mb-2 text-center" form="new-partner-form" placeholder="partner title (e.g, ACME Inc.)"/>
+                </td>
+                <td width="33%">
+                  <input type="text" id="newPartnerCode" name="newPartnerCode" class="form-control mb-2 text-center" form="new-partner-form" placeholder="partner code, lowercase (e.g, acme)"/>
+                </td>
+                <td width="33%">
+                  <input type="text" id="newPartnerPercentageShare" name="newPartnerPercentageShare" class="form-control mb-2 text-center" form="new-partner-form" placeholder="% they get AFTER Apple: (e.g, 40)"/>
+                </td>
+              </tr>
+            </table>
+            <button id="newSourceButton" type="submit" class="btn confirmed-blue-btn btn-sm text-white mt-1 mb-3" style="width: 200px;">Create Partner</button>
+          </form>
+  			</div>
+      </div>
+      
+      <div class="row mt-1 mb-2 pb-4">
+        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+          <h1 class="h5"><strong>Partner Users</strong></h1>
+          <table class="mt-3 mb-3" style="width:100%">
+          {{#each partnerUsers}}
+            <tr>
+              <td width="10%">
+                ID: {{ this.id }}
+              </td>
+              <td width="20%">
+                Partner Code: {{ this.partnerCode }}
+              </td>
+              <td width="30%">
+                {{ this.email }}
+              </td>
+              <td width="40%">
+                <button id="partnerUser{{this.id}}" onclick="deletePartnerUser('{{this.id}}')" class="btn confirmed-red-btn btn-sm">Delete Partner User</button>
+              </td>
+            </tr>
+          {{/each}}
+          </table>
+          <hr/>
+          <form id="new-partner-user-form" action="/new-partner-user" method="POST">
+            <h5>New Partner User</h5>
+            <table class="mt-3 mb-2" style="width:100%">
+              <tr>
+                <td width="33%">
+                  <input type="email" id="newPartnerUserEmail" name="newPartnerUserEmail" class="form-control mb-2 text-center" form="new-partner-user-form" placeholder="someone@acmepartner.com"/>
+                </td>
+                <td width="33%">
+                  <input type="text" id="newPartnerUserPassword" name="newPartnerUserPassword" class="form-control mb-2 text-center" form="new-partner-user-form" placeholder="password (at least 8 characters)"/>
+                </td>
+                <td width="33%">
+                  <input type="text" id="newPartnerUserCode" name="newPartnerUserCode" class="form-control mb-2 text-center" form="new-partner-user-form" placeholder="partner code (e.g, acme)"/>
+                </td>
+              </tr>
+            </table>
+            <button id="newSourceButton" type="submit" class="btn confirmed-blue-btn btn-sm text-white mt-1 mb-3" style="width: 200px;">Create Partner User</button>
+          </form>
+  			</div>
+      </div>
+      
+      <div class="row mt-1 mb-5 pb-4">
+        <div class="container-fluid mt-0 p-3 rounded confirmed-bg text-center">
+          <h1 class="h5"><strong>Partner Snapshots</strong></h1>
+          <table class="mt-3 mb-3" style="width:100%">
+          {{#each partnerSnapshots}}
+            <tr style="border-top: 1px solid #ddd;">
+              <td width="10%">
+                {{ this.id }}
+              </td>
+              <td width="10%">
+                {{ this.partnerCode }}
+              </td>
+              <td width="25%">
+                Trial {{ this.summary.trial }}<br/>
+                Paying {{ this.summary.paying }}<br/>
+              </td>
+              <td width="25%">
+                Revenue ${{ this.summary.revenue }}<br/>
+                Their Share ${{ this.summary.revenueYourShare }}
+              </td>
+              <td width="20%">
+                {{ this.createDate }}
+              </td>
+              <td width="10%">
+                <button id="snapshot{{this.id}}" onclick="deleteSnapshot('{{this.id}}')" class="btn confirmed-red-btn btn-sm">Delete</button>
+              </td>
+            </tr>
+          {{/each}}
+          </table>
+  			</div>
+      </div>
+  
+    </div> <!-- column -->
+  </div> <!-- row -->
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+  
+  <script>
+    
+    function getCurrent(partnerCode) {
+      document.getElementById("getCurrent" + partnerCode).disabled = true;
+      document.getElementById("summaryResult").style.display = "none";
+  		var http = new XMLHttpRequest();
+  		var url = "current-snapshot";
+  		var params = "partnerCode=" + partnerCode
+  		http.open("POST", url, true);
+      http.responseType = 'json';
+  		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  		http.onreadystatechange = function() {
+  		    if (http.readyState == 4) {
+    				if (http.status == 200) {
+              document.getElementById("getCurrent" + partnerCode).disabled = false;
+              document.getElementById("summaryResult").style.display = "block";
+              document.getElementById("summaryResultText").innerText = JSON.stringify(http.response.summary, null, 2);
+              document.getElementById("summaryResultCode").innerText = partnerCode;
+              return;
+    				}
+            alert("Error: " + JSON.stringify(http.response));
+  		    }
+  		}
+  		http.send(params);
+    }
+    
+    function saveSnapshot(partnerCode) {
+      if (confirm("Are you sure you want to save a new snapshot?")) {
+        document.getElementById("saveSnapshot" + partnerCode).disabled = true;
+    		var http = new XMLHttpRequest();
+    		var url = "save-snapshot";
+    		var params = "partnerCode=" + partnerCode
+    		http.open("POST", url, true);
+        http.responseType = 'json';
+    		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    		http.onreadystatechange = function() {
+    		    if (http.readyState == 4) {
+      				if (http.status == 200) {
+                location.reload();
+                return;
+      				}
+              alert("Error: " + JSON.stringify(http.response));
+    		    }
+    		}
+    		http.send(params);
+      }
+    }
+    
+    function deletePartner(id) {
+      if (confirm("Are you sure you want to delete this partner?")) {
+        document.getElementById("partner" + id).disabled = true;
+    		var http = new XMLHttpRequest();
+    		var url = "delete-partner";
+    		var params = "id=" + id
+    		http.open("POST", url, true);
+        http.responseType = 'json';
+    		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    		http.onreadystatechange = function() {
+    		    if (http.readyState == 4) {
+      				if (http.status == 200) {
+                location.reload()
+                return;
+      				}
+              alert("Error: " + JSON.stringify(http.response));
+    		    }
+    		}
+    		http.send(params);
+      }
+    }
+    
+    function deletePartnerUser(id) {
+      if (confirm("Are you sure you want to delete this partner user?")) {
+        document.getElementById("partnerUser" + id).disabled = true;
+    		var http = new XMLHttpRequest();
+    		var url = "delete-partner-user";
+    		var params = "id=" + id
+    		http.open("POST", url, true);
+        http.responseType = 'json';
+    		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    		http.onreadystatechange = function() {
+    		    if (http.readyState == 4) {
+      				if (http.status == 200) {
+                location.reload()
+                return;
+      				}
+              alert("Error: " + JSON.stringify(http.response));
+    		    }
+    		}
+    		http.send(params);
+      }
+    }
+    
+    function deleteSnapshot(id) {
+      if (confirm("Are you sure you want to delete this snapshot?")) {
+        document.getElementById("snapshot" + id).disabled = true;
+    		var http = new XMLHttpRequest();
+    		var url = "delete-snapshot";
+    		var params = "id=" + id
+    		http.open("POST", url, true);
+        http.responseType = 'json';
+    		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    		http.onreadystatechange = function() {
+    		    if (http.readyState == 4) {
+      				if (http.status == 200) {
+                location.reload()
+                return;
+      				}
+              alert("Error: " + JSON.stringify(http.response));
+    		    }
+    		}
+    		http.send(params);
+      }
+    }
+
+  </script>
+  
+</body>

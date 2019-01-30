@@ -1,6 +1,6 @@
 # Admin Server
 
-This is a private Node.js Express server that hosts the Admin dashboard at `https://admin.[domain]`. It initializes the database, generates the source and client certificates, and other admin actions. Its Security Group restricts its access to one specific whitelisted IP. Most actions are logged and many actions, such as signin or signup, send email alerts to the administrator.
+This is a private Node.js Express server that hosts the Admin dashboard at `https://admin.[domain]`. It initializes the database, generates the source and client certificates, and other admin actions. Every day at midnight, it creates a snapshot of Partner referrals. Its Security Group restricts its access to one specific whitelisted IP. Most actions are logged and many actions, such as signin or signup, send email alerts to the administrator.
 
 - [Prerequisites](#prerequisites)
 - [Database Initialization](#database-initialization)
@@ -20,6 +20,7 @@ This is a private Node.js Express server that hosts the Admin dashboard at `http
   * [Admin Dashboard Source Management - Web](#admin-dashboard-source-management---web)
   * [Admin Dashboard Suricata Management - Web](#admin-dashboard-suricata-management---web)
   * [Admin Dashboard Database Management - Web](#admin-dashboard-database-management---web)
+  * [Admin Dashboard Partners Management - Web](#admin-dashboard-partners-management---web)
   * [Change Admin User Password - Web](#change-admin-user-password---web)
   * [Change Admin User Password](#change-admin-user-password)
 - [Source Management](#source-management)
@@ -37,6 +38,14 @@ This is a private Node.js Express server that hosts the Admin dashboard at `http
 - [Client - Upload/Modify Clients](#client---upload-modify-clients)
   * [Upload Mac/PC Client or Update Files](#upload-mac-pc-client-or-update-files)
   * [Modify Client Distribution Percentages](#modify-client-distribution-percentages)
+- [Partners](#partners)
+  * [New Partner](#new-partner)
+  * [Delete Partner](#delete-partner)
+  * [New Partner User](#new-partner-user)
+  * [Delete Partner User](#delete-partner-user)
+  * [Get Partner's Current Snapshot](#get-partner-s-current-snapshot)
+  * [Save Partner's Current Snapshot](#save-partner-s-current-snapshot)
+  * [Delete Partner Snapshot](#delete-partner-snapshot)
 - [Database - Postgres Command](#database---postgres-command)
   * [Run Logged Postgres Command](#run-logged-postgres-command)
 - [Redis - Redis Brute Force](#redis---redis-brute-force)
@@ -45,7 +54,9 @@ This is a private Node.js Express server that hosts the Admin dashboard at `http
 - [Other APIs](#other-apis)
   * [Test Error Logging](#test-error-logging)
   * [Health Check](#health-check)
-- [Support](#support)
+- [Feedback](#feedback)
+- [License](#license)
+- [Contact](#contact)
 
 ## Prerequisites
 
@@ -211,6 +222,15 @@ __Request__
 
 ```
 GET /database
+```
+
+### Admin Dashboard Partners Management - Web
+__Request__
+
+`Authentication Required`
+
+```
+GET /partners
 ```
 
 ### Change Admin User Password - Web
@@ -483,6 +503,154 @@ __Response__
 Redirect to /admin with message "Percent change successful".
 ```
 
+## Partners
+
+### New Partner
+ 
+__Request__
+
+`Authentication Required`
+
+```
+POST /new-partner
+```
+
+Name | Type | Description
+--- | --- | ---
+`newPartnerTitle` | `string` | __Required__ Name of partner to create (e.g, ACME Inc.)
+`newPartnerCode` | `string` | __Required__ Code of partner to create (e.g, acme)
+`newPartnerPercentageShare` | `integer` | __Required__ Integer between 0 and 100. This is the percentage share that the partner gets after Apple's 15% or 30% cut.
+
+__Response__
+
+```
+Redirects to /partners
+```
+
+### Delete Partner
+ 
+__Request__
+
+`Authentication Required`
+
+```
+POST /delete-partner
+```
+
+Name | Type | Description
+--- | --- | ---
+`id` | `string` | __Required__ ID of Partner to delete.
+
+__Response__
+
+```
+Redirects to /partners
+```
+
+### New Partner User
+ 
+__Request__
+
+`Authentication Required`
+
+```
+POST /new-partner-user
+```
+
+Name | Type | Description
+--- | --- | ---
+`newPartnerUserEmail` | `string` | __Required__ Email address of Partner user to create.
+`newPartnerUserPassword` | `string` | __Required__ Password of Partner user to create.
+`newPartnerUserCode` | `string` | __Required__ Code of Partner user to create.
+
+__Response__
+
+```
+Redirects to /partners
+```
+
+### Delete Partner User
+ 
+__Request__
+
+`Authentication Required`
+
+```
+POST /delete-partner-user
+```
+
+Name | Type | Description
+--- | --- | ---
+`id` | `string` | __Required__ ID of Partner User to delete.
+
+__Response__
+
+```
+Redirects to /partners
+```
+
+### Get Partner's Current Snapshot
+ 
+__Request__
+
+`Authentication Required`
+
+```
+POST /current-snapshot
+```
+
+Name | Type | Description
+--- | --- | ---
+`partnerCode` | `string` | __Required__ Code of Partner to get snapshot of.
+
+__Response__
+
+```
+Returns the current Partner Snapshot for the specified partner code.
+```
+
+### Save Partner's Current Snapshot
+ 
+__Request__
+
+`Authentication Required`
+
+```
+POST /save-snapshot
+```
+
+Name | Type | Description
+--- | --- | ---
+`partnerCode` | `string` | __Required__ Code of Partner to save current snapshot of.
+
+__Response__
+
+```
+{
+	success: true
+}
+```
+
+### Delete Partner Snapshot
+ 
+__Request__
+
+`Authentication Required`
+
+```
+POST /save-snapshot
+```
+
+Name | Type | Description
+--- | --- | ---
+`id` | `string` | __Required__ ID of the partner snapshot to delete.
+
+__Response__
+
+```
+Redirects to /partners
+```
+
 ## Database - Postgres Command
 
 ### Run Logged Postgres Command
@@ -574,7 +742,7 @@ Status 200
 ## Feedback
 If you have any questions, concerns, or other feedback, please let us know any feedback in Github issues or by e-mail.
 
-We also have a bug bounty program that can be found here: https://hackerone.com/confirmed_inc
+We also have a bug bounty program -- please email <engineering@confirmedvpn.com> for details.
 
 ## License
 

@@ -6,6 +6,7 @@ const PG_HELPER_PASSWORD = process.env.PG_HELPER_PASSWORD;
 const PG_RENEWER_PASSWORD = process.env.PG_RENEWER_PASSWORD;
 const PG_MAIN_PASSWORD = process.env.PG_MAIN_PASSWORD;
 const PG_SUPPORT_PASSWORD = process.env.PG_SUPPORT_PASSWORD;
+const PG_PARTNER_PASSWORD = process.env.PG_PARTNER_PASSWORD;
 const PG_WEBHOOK_PASSWORD = process.env.PG_WEBHOOK_PASSWORD;
 const PG_DEBUG_PASSWORD = process.env.PG_DEBUG_PASSWORD;
 
@@ -32,6 +33,7 @@ module.exports = (request, response, next) => {
           PG_HELPER_PASSWORD,
           PG_RENEWER_PASSWORD,
           PG_SUPPORT_PASSWORD,
+          PG_PARTNER_PASSWORD,
           PG_WEBHOOK_PASSWORD,
           PG_DEBUG_PASSWORD
         )

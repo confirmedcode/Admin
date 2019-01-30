@@ -29,6 +29,7 @@ const ec2 = new aws.EC2();
 const ENVIRONMENT = process.env.ENVIRONMENT;
 const CERT_ACCESS_SECRET = process.env.CERT_ACCESS_SECRET;
 const LOGGROUP_NAME = ENVIRONMENT + "-AdminAudit";
+const PG_PARTNER_PASSWORD = process.env.PG_PARTNER_PASSWORD;
 
 // Routes
 const router = require("express").Router();
@@ -324,16 +325,17 @@ router.post("/postgres-command",
 ],
 (request, response, next) => {
   
-  const command = request.values.command;
+  var command = request.values.command;
   
   // Notify Admin
   Email.sendAdminAlert("Postgres Query By " + request.user.email, command);
   
   // Write the Postgres query (not the response) to CloudWatch Log Group
   return Cloudwatch.writeToLogs(LOGGROUP_NAME, "PostgresQueries", command)
-  // Execute the query
+  // Execute the query, replacing PG_PARTNER_PASSWORD as needed
   .then( result => {
-    return Database.query( request.values.command, [])
+    command = command.replace("PG_PARTNER_PASSWORD", PG_PARTNER_PASSWORD);
+    return Database.query( command, [])
   })
   .catch( error => {
     throw new ConfirmedError(400, 9999, "Error running Postgres query: " + error); 
