@@ -6,6 +6,7 @@ require("shared/environment")([
   "ADMIN",
   "MAIN",
   "RENEWER",
+  "PARTNER",
   "SUPPORT",
   "HELPER",
   "WEBHOOK",
