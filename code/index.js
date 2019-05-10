@@ -2,7 +2,14 @@
 
 const app = require("./app.js");
 const Logger = require("shared/logger");
+const ENVIRONMENT = process.env.ENVIRONMENT;
 
-app.listen(3000, function() {
-  Logger.info("Admin - Listening on port 3000");
+var port = 3000;
+
+if (ENVIRONMENT === "LOCAL") {
+  port = 3001;
+}
+
+app.listen(port, function() {
+  Logger.info("Admin - Listening on port " + port);
 });

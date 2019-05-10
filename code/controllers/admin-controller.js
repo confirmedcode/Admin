@@ -5,7 +5,6 @@ const Logger = require("shared/logger");
 const authenticate = require("../middleware/authenticate.js");
 const { body } = require("express-validator/check");
 const validateCheck = require("../middleware/validate-check.js");
-const { BruteForce } = require("shared/redis");
 
 // Models
 const { AdminUser } = require("shared/models");
@@ -17,8 +16,9 @@ const { ClientFile } = require("shared/models");
 // Utilities
 const { Database } = require("shared/utilities");
 const { Email } = require("shared/utilities");
+const { Secure } = require("shared/utilities");
 const { Cloudwatch } = require("shared/utilities");
-const ExpressBrute = require("express-brute");
+const ExpressRateLimit = require("express-rate-limit");
 const RedisClient = require("shared/redis").Client;
 const multer = require("multer");
 const upload = multer({ dest : "../uploads" });
@@ -30,6 +30,7 @@ const ENVIRONMENT = process.env.ENVIRONMENT;
 const CERT_ACCESS_SECRET = process.env.CERT_ACCESS_SECRET;
 const LOGGROUP_NAME = ENVIRONMENT + "-AdminAudit";
 const PG_PARTNER_PASSWORD = process.env.PG_PARTNER_PASSWORD;
+const REDIS_SALT = process.env.REDIS_SALT;
 
 // Routes
 const router = require("express").Router();
@@ -386,12 +387,14 @@ router.post("/get-brute",
   validateCheck
 ],
 (request, response, next) => {
-  // make array hashes for [ip, brute0-brute250, undefined]
-  // MGET them
-  // return to client
+
+  const ip = request.values.ip;
+  const ipHashed = Secure.hashSha512(ip, REDIS_SALT);
+  
+  // Look up all brute/ratelimit entries for this IP and return them
   var hashes = [];
   for (var i = 0; i <= 500; i++) {
-    hashes.push("b:" + ExpressBrute._getKey([request.values.ip, "brute" + i, undefined]) );
+    hashes.push("erl:" + ipHashed + "-" + i );
   }
   
   return RedisClient.mget(hashes, (error, results) => {
@@ -407,9 +410,16 @@ router.post("/get-brute",
 `;
         }
       }
-      response.status(200).json({
-        message: toReturn
-      });
+      if (toReturn == "") {
+        response.status(200).json({
+          message: "IP Not Found"
+        });
+      }
+      else {
+        response.status(200).json({
+          message: toReturn
+        });
+      }
     }
   });
 });
@@ -422,12 +432,13 @@ router.post("/clear-brute",
   validateCheck
 ],
 (request, response, next) => {
-  // make array hashes for [ip, brute0-brute250, undefined]
-  // DEL them
-  // return result to client
+  const ip = request.values.ip;
+  const ipHashed = Secure.hashSha512(ip, REDIS_SALT);
+
+  // Clear all brute/ratelimit entries for this IP
   var hashes = [];
   for (var i = 0; i <= 500; i++) {
-    hashes.push("b:" + ExpressBrute._getKey([request.values.ip, "brute" + i, undefined]) );
+    hashes.push("erl:" + ipHashed + "-" + i );
   }
   
   return RedisClient.del(hashes, (error, result) => {
@@ -440,6 +451,7 @@ router.post("/clear-brute",
       });
     }
   });
+
 });
 
 /*********************************************
