@@ -7,7 +7,6 @@ const { body } = require("express-validator/check");
 const validateCheck = require("../middleware/validate-check.js");
 
 // Models
-const { AdminUser } = require("shared/models");
 const { User } = require("shared/models");
 const { Source } = require("shared/models");
 const { RuleFile } = require("shared/models");
@@ -16,21 +15,13 @@ const { ClientFile } = require("shared/models");
 // Utilities
 const { Database } = require("shared/utilities");
 const { Email } = require("shared/utilities");
-const { Secure } = require("shared/utilities");
-const { Cloudwatch } = require("shared/utilities");
-const ExpressRateLimit = require("express-rate-limit");
-const RedisClient = require("shared/redis").Client;
 const multer = require("multer");
 const upload = multer({ dest : "../uploads" });
-const crypto = require("crypto");
 const aws = require("aws-sdk");
 const ec2 = new aws.EC2();
 
 const ENVIRONMENT = process.env.ENVIRONMENT;
 const CERT_ACCESS_SECRET = process.env.CERT_ACCESS_SECRET;
-const LOGGROUP_NAME = ENVIRONMENT + "-AdminAudit";
-const PG_PARTNER_PASSWORD = process.env.PG_PARTNER_PASSWORD;
-const REDIS_SALT = process.env.REDIS_SALT;
 
 // Routes
 const router = require("express").Router();
@@ -114,18 +105,6 @@ authenticate,
     });
   })
   .catch(error => { next(error); });
-});
-
-/*********************************************
- *
- * Database Management Page
- *
- *********************************************/
-
-router.get("/database",
-authenticate,
-(request, response, next) => {
-  return response.render("database");
 });
 
 /*********************************************
@@ -309,149 +288,6 @@ router.post("/modify-percent",
   .catch(error => {
     return next(error);
   });
-});
-
-/*********************************************
- *
- * Postgres
- *
- *********************************************/
-
-router.post("/postgres-command",
-[
-  authenticate,
-  body("command")
-  .exists().withMessage("Missing Command."),
-  validateCheck
-],
-(request, response, next) => {
-  
-  var command = request.values.command;
-  
-  // Notify Admin
-  Email.sendAdminAlert("Postgres Query By " + request.user.email, command);
-  
-  // Write the Postgres query (not the response) to CloudWatch Log Group
-  return Cloudwatch.writeToLogs(LOGGROUP_NAME, "PostgresQueries", command)
-  // Execute the query, replacing PG_PARTNER_PASSWORD as needed
-  .then( result => {
-    command = command.replace("PG_PARTNER_PASSWORD", PG_PARTNER_PASSWORD);
-    return Database.query( command, [])
-  })
-  .catch( error => {
-    throw new ConfirmedError(400, 9999, "Error running Postgres query: " + error); 
-  })
-  // Show result to Admin (but don't log result to maintain privay)
-  .then( result => {
-    return response.status(200).json({
-      message: JSON.stringify(result.rows, null, 2)
-    });
-  })
-  .catch(error => {
-    return next(error);
-  });
-});
-
-/*********************************************
- *
- * Brute
- *
- *********************************************/
-
-// router.post("/redis-command",
-// [
-//   authenticate,
-//   body("command")
-//   .exists().withMessage("Missing Command."),
-//   body("arguments"),
-//   validateCheck
-// ],
-// (request, response, next) => {
-//   return RedisClient.send_command(request.values.command, request.values.arguments ? request.values.arguments.split(",") : null, (error, result) => {
-//     if (error) {
-//       next(error);
-//     }
-//     else {
-//       response.status(200).json({
-//         message: result
-//       });
-//     }
-//   });
-// });
-
-router.post("/get-brute",
-[
-  authenticate,
-  body("ip")
-  .exists().withMessage("Missing IP."),
-  validateCheck
-],
-(request, response, next) => {
-
-  const ip = request.values.ip;
-  const ipHashed = Secure.hashSha512(ip, REDIS_SALT);
-  
-  // Look up all brute/ratelimit entries for this IP and return them
-  var hashes = [];
-  for (var i = 0; i <= 500; i++) {
-    hashes.push("erl:" + ipHashed + "-" + i );
-  }
-  
-  return RedisClient.mget(hashes, (error, results) => {
-    if (error) {
-      next(error);
-    }
-    else {
-      var toReturn = "";
-      for (var i = 0; i <= 500; i++) {
-        if ( results[i] != null && results[i].length != 0) {
-          toReturn = `${toReturn}brute${i}
-  ${results[i]}
-`;
-        }
-      }
-      if (toReturn == "") {
-        response.status(200).json({
-          message: "IP Not Found"
-        });
-      }
-      else {
-        response.status(200).json({
-          message: toReturn
-        });
-      }
-    }
-  });
-});
-
-router.post("/clear-brute",
-[
-  authenticate,
-  body("ip")
-  .exists().withMessage("Missing IP."),
-  validateCheck
-],
-(request, response, next) => {
-  const ip = request.values.ip;
-  const ipHashed = Secure.hashSha512(ip, REDIS_SALT);
-
-  // Clear all brute/ratelimit entries for this IP
-  var hashes = [];
-  for (var i = 0; i <= 500; i++) {
-    hashes.push("erl:" + ipHashed + "-" + i );
-  }
-  
-  return RedisClient.del(hashes, (error, result) => {
-    if (error) {
-      next(error);
-    }
-    else {
-      response.status(200).json({
-        message: result + " Brute Entries Cleared"
-      });
-    }
-  });
-
 });
 
 /*********************************************

@@ -2,20 +2,16 @@ const ConfirmedError = require("shared/error");
 const Logger = require("shared/logger");
 
 // Middleware
-const { check, body, query } = require("express-validator/check");
+const { body } = require("express-validator/check");
 const validateCheck = require("../middleware/validate-check.js");
 
 // Models
+const { Audit } = require("shared/utilities");
 const { User } = require("shared/models");
 const { Source } = require("shared/models");
 
 // Utilities
 const { Email } = require("shared/utilities");
-const { Cloudwatch } = require("shared/utilities");
-
-// Constants
-const ENVIRONMENT = process.env.ENVIRONMENT;
-const LOGGROUP_NAME = ENVIRONMENT + "-AdminAudit";
 
 // Routes
 const router = require("express").Router();
@@ -71,7 +67,11 @@ Time: ${new Date()}`);
 Path: ${request.path}
 IP: ${request.ip}
 Time: ${new Date()}`);
-    return Cloudwatch.writeToLogs(LOGGROUP_NAME, "Actions", "Certificate Downloaded by: " + request.ip)
+
+    return Audit.logToCloudWatch("Actions", "Certificate Downloaded by: " + request.ip)
+      .then( result => {
+        return Audit.logToS3("Actions", "Certificate Downloaded by: " + request.ip);
+      })
       .then( result => {
         return Source.getServerCertificate(id);
       }) 

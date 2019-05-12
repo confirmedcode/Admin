@@ -78,6 +78,7 @@ app.use(require("./middleware/initialize-database.js"));
 
 // Controllers
 app.use("/", require("./controllers/admin-controller.js"));
+app.use("/", require("./controllers/database-controller.js"));
 app.use("/", require("./controllers/notification-controller.js"));
 app.use("/", require("./controllers/partners-controller.js"));
 app.use("/", require("./controllers/signin-controller.js"));
