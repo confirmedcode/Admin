@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 cd /home/node/admin
 git config --global credential.helper '!aws codecommit credential-helper $@'
 git config --global credential.UseHttpPath true
