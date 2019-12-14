@@ -82,26 +82,26 @@ router.post("/postgres-command",
  *
  *********************************************/
 
-// router.post("/redis-command",
-// [
-//   authenticate,
-//   body("command")
-//   .exists().withMessage("Missing Command."),
-//   body("arguments"),
-//   validateCheck
-// ],
-// (request, response, next) => {
-//   return RedisClient.send_command(request.values.command, request.values.arguments ? request.values.arguments.split(",") : null, (error, result) => {
-//     if (error) {
-//       next(error);
-//     }
-//     else {
-//       response.status(200).json({
-//         message: result
-//       });
-//     }
-//   });
-// });
+router.post("/redis-command",
+[
+  authenticate,
+  body("command")
+  .exists().withMessage("Missing Command."),
+  body("arguments"),
+  validateCheck
+],
+(request, response, next) => {
+  return RedisClient.send_command(request.values.command, request.values.arguments ? request.values.arguments.split(",") : null, (error, result) => {
+    if (error) {
+      next(error);
+    }
+    else {
+      response.status(200).json({
+        message: result
+      });
+    }
+  });
+});
 
 router.post("/get-brute",
 [

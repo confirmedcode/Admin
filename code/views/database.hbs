@@ -24,7 +24,7 @@
           </div>
         </div>
 
-<!--        <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
+       <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
           <h1 class="h6 text-center"><strong>Redis Console</strong></h1>
           <div>
             <input type="text" id="redisCommand" class="form-control" placeholder="Command e.g, KEYS"/>
@@ -32,7 +32,7 @@
             <textarea rows="12" type="text" id="redisResult" class="form-control mt-2"></textarea>
             <button id="redisCommandButton" onclick="redisCommand();" class="btn confirmed-blue-btn btn-sm mt-2" style="width: 50%;">Submit</button>
           </div>
-        </div> -->
+        </div>
         
         <div class="container-fluid mt-1 p-3 rounded confirmed-bg text-center">
           <h1 class="h6 text-center"><strong>Get Brute for IP</strong></h1>
@@ -82,24 +82,24 @@
       http.send(params);
     }
     
-    // function redisCommand() {
-    //       var http = new XMLHttpRequest();
-    //       var url = "redis-command";
-    //       http.open("POST", url, true);
-    //   var params = "command=" + encodeURIComponent(document.getElementById("redisCommand").value) + "&arguments=" + encodeURIComponent(document.getElementById("redisArguments").value);
-    //   http.responseType = 'json';
-    //       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    //       http.onreadystatechange = function() {
-    //           if (http.readyState == 4) {
-    //         if (http.status == 200) {
-    //           document.getElementById("redisResult").value = http.response.message;
-    //           return;
-    //         }
-    //         alert("Error: " + JSON.stringify(http.response));
-    //           }
-    //       }
-    //       http.send(params);
-    // }
+    function redisCommand() {
+          var http = new XMLHttpRequest();
+          var url = "redis-command";
+          http.open("POST", url, true);
+      var params = "command=" + encodeURIComponent(document.getElementById("redisCommand").value) + "&arguments=" + encodeURIComponent(document.getElementById("redisArguments").value);
+      http.responseType = 'json';
+          http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          http.onreadystatechange = function() {
+              if (http.readyState == 4) {
+            if (http.status == 200) {
+              document.getElementById("redisResult").value = http.response.message;
+              return;
+            }
+            alert("Error: " + JSON.stringify(http.response));
+              }
+          }
+          http.send(params);
+    }
     
     function getBrute() {
   		var http = new XMLHttpRequest();
