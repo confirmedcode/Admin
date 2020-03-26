@@ -17,6 +17,7 @@ const { Email } = require("shared/utilities");
 const router = require("express").Router();
 
 // Secret
+const ALLOWED_IP = process.env.ALLOWED_IP;
 const SECRET = process.env.CERT_ACCESS_SECRET;
 const ipRangeCheck = require("ip-range-check");
 
@@ -43,14 +44,14 @@ router.post("/get-server-certificate",
   const secret = request.values.secret;
   const id = request.values.id;
   
-  // requestor ip must be 172.16.0.0/12
-  if (ipRangeCheck(request.ip, "172.16.0.0/12") !== true || !request.ip.startsWith("172.") ) {
-    Email.sendAdminAlert("Breach! Non-internal request for server certificate.",
+  // admin should not access certificate
+  if (request.ip == ALLOWED_IP || ipRangeCheck(request.ip, ALLOWED_IP) == true ) {
+    Email.sendAdminAlert("Violation - Operator IP should not access this API.",
     `Source ID: ${id}
 Path: ${request.path}
 IP: ${request.ip}
 Time: ${new Date()}`);
-    return next(new ConfirmedError(400, 99, "Non-Internal IP not allowed to access this API. Incident reported."));
+    return next(new ConfirmedError(400, 99, "Violation - Operator IP should not access this API. Incident reported."));
   }
 
   if (secret !== SECRET) {
