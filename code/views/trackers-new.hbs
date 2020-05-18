@@ -1,0 +1,117 @@
+{{> header title="New Tracker" }}
+
+<body>
+  
+  {{> nav }}
+  
+  <div class="container-fluid mt-3">
+    
+    <div class="row">
+      <div class="col mt-2">
+
+        <a href="/trackers" class="btn btn-sm btn-primary btn-lg float-left mx-2">Discard</a>
+  
+        <div class="row">
+          <div class="col">
+            <h5 class="mb-3 text-center">New Tracker</h5>
+            {{> flash }}
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6 offset-md-3">
+            
+            <form id="form">
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerName" class="col-3 col-form-label pb-0">Name</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="trackerName" id="trackerName" placeholder="Enter tracker name">
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerDisplayName" class="col-3 col-form-label pb-0">Display Name</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="trackerDisplayName" id="trackerDisplayName" placeholder="Enter tracker display name">
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerTagline" class="col-3 col-form-label pb-0">Tagline</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="trackerTagline" id="trackerTagline" placeholder="Enter tracker tagline">
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerCategories" class="col-3 col-form-label pb-0">Categories</label>
+                <div class="col">
+                  <fieldset>
+                      <label class="d-block mb-0"><input type="checkbox" name="trackerCategories[]" value="Analytics"> Analytics</label>
+                      <label class="d-block mb-0"><input type="checkbox" name="trackerCategories[]" value="Marketing"> Marketing</label>
+                      <label class="d-block mb-0"><input type="checkbox" name="trackerCategories[]" value="Reporting"> Reporting</label>
+                      <label class="d-block mb-0"><input type="checkbox" name="trackerCategories[]" value="User Data"> User Data</label>
+                      <input type="text" class="form-control" name="trackerCategories[]" id="trackerCategories" placeholder="Enter Other Category 1">
+                      <input type="text" class="form-control" name="trackerCategories[]" id="trackerCategories2" placeholder="Enter Other Category 2">
+                  </fieldset>
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerConnections" class="col-3 col-form-label pb-0">Connections</label>
+                <div class="col">
+                  <fieldset>
+                    <input type="text" class="form-control" name="trackerConnections[]" id="trackerConnections" placeholder="Enter Connections 1">
+                    <input type="text" class="form-control" name="trackerConnections[]" id="trackerConnections" placeholder="Enter Connections 2">
+                    <input type="text" class="form-control" name="trackerConnections[]" id="trackerConnections" placeholder="Enter Connections 3">
+                    <input type="text" class="form-control" name="trackerConnections[]" id="trackerConnections" placeholder="Enter Connections 4">
+                    <input type="text" class="form-control" name="trackerConnections[]" id="trackerConnections" placeholder="Enter Connections 5">
+                  </fieldset>
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerCollectedData" class="col-3 col-form-label pb-0">Collected Data</label>
+                <div class="col">
+                  <textarea rows="8" type="text" name="trackerCollectedData" id="trackerCollectedData" class="form-control" placeholder="Enter collected data" style="overflow-y: scroll;"></textarea>
+                </div>
+              </div>
+            
+              <button id="submitButton" class="btn btn-primary btn-lg float-right mr-2 mb-5">Save Tracker</button>
+        
+            </form>
+            
+          </div>
+        </div>
+        
+      </div>      
+    </div>
+    
+  </div>
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+  
+</body>
+
+<script>
+  $("#submitButton").on( "click", function(e) {
+    e.preventDefault();
+    var data = $("#form").serialize();
+    $.ajax({
+        type: 'POST',
+        url: '/save-tracker',
+        data: data,
+        dataType: 'json',
+        success: function (data, status) {
+          window.location = "/trackers"
+        },
+        error: function(error, status) {
+          alert("error: " + JSON.stringify(error, null, 2))
+        }
+    });
+    return false; 
+  });   
+</script>

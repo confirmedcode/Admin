@@ -1,0 +1,63 @@
+{{> header title="Reviews" }}
+
+<body>
+  
+  {{> nav }}
+  
+  <div class="container mt-3">
+  
+    <div class="row">
+      <div class="col mt-1">
+        <a href="/admin" class="btn btn-primary btn-lg position-absolute">Back</a>
+        <h5 class="mb-2 mt-2 text-center">Reviews</h5>
+        {{> flash }}
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col mb-4 mx-4 mt-3 rounded shadow px-3 py-2">
+        {{#if reviews}}
+        <table class="table table-hover small">
+          <thead>
+            <tr>
+              <th scope="col" class="border-top-0">id</th>
+              <th scope="col" class="border-top-0">name</th>
+              <th scope="col" class="border-top-0">displayName</th>
+              <th scope="col" class="border-top-0">displayDate</th>
+              <th scope="col" class="border-top-0">published</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each reviews}}
+            <tr>
+              <td>{{this.id}}</td>
+              <td>{{this.name}}</td>
+              <td>{{this.displayName}}</td>
+              <td>{{this.displayDate}}</td>
+              <td>{{this.published}}</td>
+              <td>
+                <a href="/edit-review?name={{this.name}}" class="btn btn-primary btn-sm mb-1">Edit</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{else}}
+          <h6 class="text-center text-muted">No reviews found.</h6>
+        {{/if}}
+        
+        <div class="row">
+          <div class="col text-center mt-3 mb-3">
+            <a href="/new-review" class="btn btn-primary btn-lg">New Review</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+   
+</body>

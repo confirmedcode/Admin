@@ -1,0 +1,268 @@
+{{> header title="New Review" }}
+
+<body>
+  
+  {{> nav }}
+  
+  <div class="container-fluid mt-3">
+    
+    <div class="row">
+      <div class="col-md-8 offset-md-2 mt-2">
+  
+        <div class="row">
+          <div class="col">
+            <a href="/reviews" class="btn btn-primary btn-sm float-left mx-2 mb-4">Discard Changes</a>
+            <h5 class="mb-3 text-center">New Review</h5>
+            {{> flash }}
+          </div>
+        </div>
+        
+        <form id="form">
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewName" class="col-3 col-form-label pb-0">Name</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewName" placeholder="Enter review name" value="{{ review.name }}">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewDisplayName" class="col-3 col-form-label pb-0">Display Name</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewDisplayName" placeholder="Enter review display name" value="{{ review.displayName }}">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewTagline" class="col-3 col-form-label pb-0">Tagline</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewTagline" placeholder="Enter review tagline" value="{{ review.tagline }}">
+            </div>
+          </div>
+          
+          {{!--
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewNumTrackers" class="col-3 col-form-label pb-0"># Trackers</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewNumTrackers" placeholder="Enter # Trackers" value="{{ review.numTrackers }}">
+            </div>
+          </div> --}}
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewNumAttempts" class="col-3 col-form-label pb-0"># Attempts</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewNumAttempts" placeholder="Enter # Attempts" value="{{ review.numAttempts }}">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewRating" class="col-3 col-form-label pb-0">Rating</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewRating" placeholder="Enter Rating" value="{{ review.rating }}">
+            </div>
+          </div>
+        
+          {{!-- <div class="form-group row mb-0 pb-2">
+            <label for="reviewDate" class="col-3 col-form-label pb-0">Date</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewDate" placeholder="Enter Date" value="{{ review.date }}">
+            </div>
+          </div> --}}
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewPlatforms" class="col-3 col-form-label pb-0">Platforms</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewPlatforms" placeholder="Enter Platforms" value="{{ review.platforms }}">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewRanking" class="col-3 col-form-label pb-0">Ranking</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewRanking" placeholder="Enter Ranking" value="{{ review.ranking }}">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewIconUrl" class="col-3 col-form-label pb-0">Icon URL</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewIconUrl" placeholder="Enter Icon URL" value="{{ review.iconUrl }}">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewDisclaimer" class="col-3 col-form-label pb-0">Disclaimer</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewDisclaimer" placeholder="Enter Disclaimer" value="{{ review.disclaimer }}">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewDataRequiredInfo" class="col-3 col-form-label pb-0">Personal Data - Required Info</label>
+            <div class="col">
+              <fieldset>
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+                <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
+              </fieldset>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewDataRequiredAccess" class="col-3 col-form-label pb-0">Personal Data - Required Access</label>
+            <div class="col">
+              <fieldset>
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
+              </fieldset>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewDataOptional" class="col-3 col-form-label pb-0">Personal Data - Optional</label>
+            <div class="col">
+              <fieldset>
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
+              </fieldset>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewScreenshotUrl" class="col-3 col-form-label pb-0">Screenshot URL (Of Trackers)</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewScreenshotUrl" placeholder="Enter ScreenshotUrl" value="{{ review.screenshotUrl }}">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewTrackers" class="col-3 col-form-label pb-0">Trackers</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+              <input type="text" class="form-control" name="reviewTrackerNames[]" placeholder="Enter Tracker Name">
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewTestMethod" class="col-3 col-form-label pb-0">How was tracker testing conducted? (Tested using Lockdown____)</label>
+            <div class="col">
+              <textarea rows="3" type="text" name="reviewTestMethod" class="form-control" style="overflow-y: scroll;">{{ review.testMethod }}</textarea>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewTestDescription" class="col-3 col-form-label pb-0">How many total tracking attempts? In what time duration? What actions were taken?</label>
+            <div class="col">
+              <textarea rows="4" type="text" name="reviewTestDescription" class="form-control" style="overflow-y: scroll;">{{ review.testDescription }}</textarea>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewTestOpen" class="col-3 col-form-label pb-0">How many tracking attempts each time the app is opened?</label>
+            <div class="col">
+              <textarea rows="3" type="text" name="reviewTestOpen" class="form-control" style="overflow-y: scroll;">{{ review.testOpen }}</textarea>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewTestConsent" class="col-3 col-form-label pb-0">Did user give consent to tracking before tracking started?</label>
+            <div class="col">
+              <textarea rows="3" type="text" name="reviewTestConsent" class="form-control" style="overflow-y: scroll;">{{ review.testConsent }}</textarea>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewTestBackground" class="col-3 col-form-label pb-0">Any background tracking when app isn't open?</label>
+            <div class="col">
+              <textarea rows="3" type="text" name="reviewTestBackground" class="form-control" style="overflow-y: scroll;">{{ review.testBackground }}</textarea>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewTestNotes" class="col-3 col-form-label pb-0">Other important notes?</label>
+            <div class="col">
+              <textarea rows="3" type="text" name="reviewTestNotes" class="form-control" style="overflow-y: scroll;">{{ review.testNotes }}</textarea>
+            </div>
+          </div>
+        
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewSummaryUrl" class="col-3 col-form-label pb-0">Infographic URL</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewSummaryUrl" placeholder="Enter SummaryUrl" value="{{ review.summaryUrl }}">
+            </div>
+          </div>
+          
+          <div class="form-group row mb-0 pb-2">
+            <label for="reviewPublished" class="col-3 col-form-label pb-0">Published?</label>
+            <div class="col">
+              <input type="text" class="form-control" name="reviewPublished" placeholder="true/false" value="false">
+            </div>
+          </div>
+        
+        </form>
+
+        <button id="submitButton" class="btn btn-primary btn float-right mr-2 mb-5 mt-3">Save Review</button>
+
+      </div>      
+    </div>
+    
+  </div>
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+  
+  <script>
+    $("#submitButton").on( "click", function(e) {
+      e.preventDefault();
+      var data = $("#form").serialize();
+      $.ajax({
+         type: 'POST',
+         url: '/save-review',
+         data: data,
+         dataType: 'json',
+         success: function (data, status) {
+           window.location = "/reviews"
+         },
+         error: function(error, status) {
+           alert("error: " + JSON.stringify(error, null, 2))
+         }
+      });
+      return false; 
+    });
+  </script>
+  
+</body>

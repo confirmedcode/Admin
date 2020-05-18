@@ -1,0 +1,97 @@
+{{> header title="CMS Files" }}
+
+<body>
+  
+  {{> nav }}
+  
+  <div class="container-fluid mt-3">
+  
+    <div class="row">
+      <div class="col mt-1">
+        <a href="/admin" class="btn btn-primary btn-lg position-absolute">Back</a>
+        <h5 class="mb-2 mt-2 text-center">CMS Files</h5>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col mb-4 mx-4 mt-3 rounded shadow px-3 py-2">
+
+        {{> flash }}
+        
+        {{#if cmsFiles}}
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="border-top-0">File</th>
+              <th scope="col" class="border-top-0">Modified Date</th>
+              <th scope="col" class="border-top-0">Size</th>
+              <th scope="col" class="border-top-0">URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each cmsFiles}}
+            <tr>
+              <td>{{this.key}}</td>
+              <td>{{this.modifiedDateFriendly}}</td>
+              <td>{{this.size}} bytes</td>
+              <td><a href="{{this.url}}">{{this.url}}</a></td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{else}}
+          <h6 class="text-center text-muted">No files found.</h6>
+        {{/if}}
+        
+        <div class="row">
+          <div class="col text-center mt-3">
+            <hr/>
+            <h5 class="pb-2 pt-2">Upload File</h5>
+            <form id="cmsFileUploadForm" enctype="multipart/form-data" action="/upload-cms-file" method="post">
+              <div class="form-group row">
+                <label for="file" class="col-2 col-form-label">Choose File</label>
+                <div class="col-10 text-left">
+                  <input type="file" name="file"/>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="filename" class="col-2 col-form-label">File Name</label>
+                <div class="col-10">
+                  <input type="text" class="form-control" id="filename" name="filename" placeholder="Enter File Name With Extension">
+                </div>
+              </div>
+              <input type="submit" class="btn btn-primary btn-lg" value="Upload File" name="submit">
+              <div id="cmsFileUploadStatus" class="mt-2"></div>
+            </form>
+          </div>
+        </div>
+        
+      </div>
+      
+    </div>
+    
+  </div>
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+   
+   
+  <script>
+    $(document).ready(function() {
+      $('#cmsFileUploadForm').submit(function() {
+        $("#cmsFileUploadStatus").empty().text("Uploading...");
+        $(this).ajaxSubmit({
+          error: function(xhr) {
+            alert('Error: ' + xhr.status);
+          },
+          success: function(response) {
+            $("#cmsFileUploadStatus").empty().text(response);
+          }
+        });
+        return false;
+      });   
+    });
+  </script>
+  
+</body>

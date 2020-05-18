@@ -1,0 +1,141 @@
+{{> header title="Edit Tracker" }}
+
+<body>
+  
+  {{> nav }}
+  
+  <div class="container-fluid mt-3">
+    
+    <div class="row">
+      <div class="col mt-2">
+
+        <a href="/trackers" class="btn btn-sm btn-primary btn-lg float-left mx-2">Discard Changes</a>
+  
+        <div class="row">
+          <div class="col">
+            <h5 class="mb-3 text-center">Edit Tracker</h5>
+            {{> flash }}
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-6 offset-md-3">
+            <form id="form">
+              
+              <input type="hidden" class="form-control" name="trackerId" id="trackerId" value="{{ tracker.id }}">
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerName" class="col-3 col-form-label pb-0">Name</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="trackerName" id="trackerName" placeholder="Enter tracker name" value="{{ tracker.name }}">
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerDisplayName" class="col-3 col-form-label pb-0">Display Name</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="trackerDisplayName" id="trackerDisplayName" placeholder="Enter tracker display name" value="{{ tracker.displayName }}">
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerTagline" class="col-3 col-form-label pb-0">Tagline</label>
+                <div class="col">
+                  <input type="text" class="form-control" name="trackerTagline" id="trackerTagline" placeholder="Enter tracker tagline" value="{{ tracker.tagline }}">
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerCategories" class="col-3 col-form-label pb-0">Categories</label>
+                <div class="col">
+                  <fieldset>
+                    {{#each tracker.categories}}
+                    <input type="text" class="form-control" name="trackerCategories[]" value="{{this}}">
+                    {{/each}}
+                    <input type="text" class="form-control" name="trackerCategories[]" id="trackerCategories2" placeholder="Enter Other Category 2">
+                    <input type="text" class="form-control" name="trackerCategories[]" id="trackerCategories3" placeholder="Enter Other Category 3">
+                  </fieldset>
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerConnections" class="col-3 col-form-label pb-0">Connections</label>
+                <div class="col">
+                  <fieldset>
+                    {{#each tracker.connections}}
+                    <input type="text" class="form-control" name="trackerConnections[]" placeholder="Enter Connections" value="{{ this }}">
+                    {{/each}}
+                    <input type="text" class="form-control" name="trackerConnections[]" placeholder="Enter Connections 2">
+                    <input type="text" class="form-control" name="trackerConnections[]" placeholder="Enter Connections 3">
+                    <input type="text" class="form-control" name="trackerConnections[]" placeholder="Enter Connections 4">
+                    <input type="text" class="form-control" name="trackerConnections[]" placeholder="Enter Connections 5">
+                  </fieldset>
+                </div>
+              </div>
+        
+              <div class="form-group mb-0 pb-2">
+                <label for="trackerCollectedData" class="col-3 col-form-label pb-0">Collected Data</label>
+                <div class="col">
+                  <textarea rows="8" type="text" name="trackerCollectedData" id="trackerCollectedData" class="form-control" placeholder="Enter collected data" style="overflow-y: scroll;">{{ tracker.collectedData }}</textarea>
+                </div>
+              </div>
+
+              <button id="deleteButton" class="btn btn-danger btn-lg float-left ml-2">Delete Tracker</button>
+
+              <button id="submitButton" class="btn btn-primary btn-lg float-right mr-2 mb-5">Save Tracker</button>
+        
+            </form>
+
+          </div>
+        </div>
+        
+      </div>      
+    </div>
+    
+  </div>
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+  
+</body>
+  
+<script>
+  $("#submitButton").on( "click", function(e) {
+    e.preventDefault();
+    var data = $("#form").serialize();
+    $.ajax({
+       type: 'POST',
+       url: '/save-tracker',
+       data: data,
+       dataType: 'json',
+       success: function (data, status) {
+         window.location = "/trackers"
+       },
+       error: function(error, status) {
+         alert("error: " + JSON.stringify(error, null, 2))
+       }
+    });
+    return false; 
+  });
+  
+  $("#deleteButton").on( "click", function(e) {
+    e.preventDefault();
+    if (confirm("Sure you want to delete this? There's no Undo.")) {
+      var data = $("#form").serialize();
+      $.ajax({
+         type: 'POST',
+         url: '/delete-tracker',
+         data: data,
+         dataType: 'json',
+         success: function (data, status) {
+           window.location = "/trackers"
+         },
+         error: function(error, status) {
+           alert("error: " + JSON.stringify(error, null, 2))
+         }
+      });
+    }
+    return false; 
+  });
+</script>

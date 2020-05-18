@@ -85,6 +85,7 @@ app.use("/", require("./controllers/signin-controller.js"));
 app.use("/", require("./controllers/signup-controller.js"));
 app.use("/", require("./controllers/source-controller.js"));
 app.use("/", require("./controllers/secret-controller.js"));
+app.use("/", require("./controllers/reviews-controller.js"));
 app.use("/", require("./controllers/rule-controller.js"));
 
 app.get("/error-test", (request, response, next) => {

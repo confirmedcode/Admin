@@ -17,6 +17,10 @@ body {
   line-height: 44px; /* Vertically center the text there */
 }
 
+::placeholder {
+  color: #bfbfbf !important;  
+}
+
 .confirmed-bg {
   background: rgba(18, 91, 152, 0.05);
 }
