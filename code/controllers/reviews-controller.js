@@ -79,15 +79,9 @@ router.post("/save-review",
     .exists().withMessage("Missing IconUrl.")
     .not().isEmpty().withMessage("Missing IconUrl."),
   body("reviewDisclaimer"),
-  body("reviewDataRequiredInfo")
-    .exists().withMessage("Missing DataRequiredInfo.")
-    .not().isEmpty().withMessage("Missing DataRequiredInfo."),
-  body("reviewDataRequiredAccess")
-    .exists().withMessage("Missing DataRequiredAccess.")
-    .not().isEmpty().withMessage("Missing DataRequiredAccess."),
-  body("reviewDataOptional")
-    .exists().withMessage("Missing reviewDataOptional.")
-    .not().isEmpty().withMessage("Missing reviewDataOptional."),
+  body("reviewDataRequiredInfo"),
+  body("reviewDataRequiredAccess"),
+  body("reviewDataOptional"),
   body("reviewScreenshotUrl"),
   body("reviewTestMethod")
     .exists().withMessage("Missing reviewTestMethod.")
@@ -112,9 +106,7 @@ router.post("/save-review",
     .exists().withMessage("Missing reviewPublished.")
     .not().isEmpty().withMessage("Missing reviewPublished.")
     .isBoolean(),
-  body("reviewTrackerNames")
-    .exists().withMessage("Missing TrackerNames.")
-    .not().isEmpty().withMessage("Missing TrackerNames."),
+  body("reviewTrackerNames"),
   ValidateCheck
 ],
 (request, response, next) => {

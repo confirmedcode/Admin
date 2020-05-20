@@ -227,8 +227,15 @@
           
           <div class="form-group row mb-0 pb-2">
             <label for="reviewPublished" class="col-3 col-form-label pb-0">Published?</label>
-            <div class="col">
-              <input type="text" class="form-control" name="reviewPublished" placeholder="true/false" value="false">
+            <div class="col pt-1">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="reviewPublished" id="reviewPublishedTrue" value="true" {{#if review.published}}checked{{/if}}>
+                <label class="form-check-label" for="reviewPublishedTrue">true</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="reviewPublished" id="reviewPublishedFalse" value="false" {{#unless review.published}}checked{{/unless}}>
+                <label class="form-check-label" for="reviewPublishedFalse">false</label>
+              </div>
             </div>
           </div>
         
