@@ -17,7 +17,7 @@ router.get("/reviews",
   authenticate
 ],
 (request, response, next) => {
-  return Review.getAllWithoutTrackers(true)
+  return Review.getAll(true)
     .then(reviews => {
       return response.render("reviews", {
         reviews: reviews
