@@ -96,9 +96,23 @@
               <input type="text" class="form-control" name="reviewDisclaimer" placeholder="Enter Disclaimer" value="{{ review.disclaimer }}">
             </div>
           </div>
+          
+          <div class="row mb-0 pb-2">
+            <p class="col-3 my-0 py-0">🙋‍♀️ Full Name</p>
+            <p class="col-3 my-0 py-0">✉️ Email Address</p>
+            <p class="col-3 my-0 py-0">📅 Full Birthdate</p>
+            <p class="col-3 my-0 py-0">📷 Camera</p>
+            <p class="col-3 my-0 py-0">🎤 Microphone</p>
+            <p class="col-3 my-0 py-0">❗️ Notification</p>
+            <p class="col-3 my-0 py-0">📇 Contacts</p>
+            <p class="col-3 my-0 py-0">🤦‍♀️ Facebook Connect</p>
+            <p class="col-3 my-0 py-0">📞 Phone Number</p>
+            <p class="col-3 my-0 py-0">🖼 Photos</p>
+            <p class="col-3 my-0 py-0">📍 Location</p>
+          </div>
         
           <div class="form-group row mb-0 pb-2">
-            <label for="reviewDataRequiredInfo" class="col-3 col-form-label pb-0">Personal Data - Required Info</label>
+            <label for="reviewDataRequiredInfo" class="col-3 col-form-label pb-0">Required Info</label>
             <div class="col">
               <fieldset>
                 <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
@@ -116,7 +130,7 @@
           </div>
         
           <div class="form-group row mb-0 pb-2">
-            <label for="reviewDataRequiredAccess" class="col-3 col-form-label pb-0">Personal Data - Required Access</label>
+            <label for="reviewDataRequiredAccess" class="col-3 col-form-label pb-0">Required Access</label>
             <div class="col">
               <fieldset>
                 <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
@@ -134,7 +148,7 @@
           </div>
         
           <div class="form-group row mb-0 pb-2">
-            <label for="reviewDataOptional" class="col-3 col-form-label pb-0">Personal Data - Optional</label>
+            <label for="reviewDataOptional" class="col-3 col-form-label pb-0">Data - Optional</label>
             <div class="col">
               <fieldset>
                 <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
@@ -152,7 +166,7 @@
           </div>
         
           <div class="form-group row mb-0 pb-2">
-            <label for="reviewScreenshotUrl" class="col-3 col-form-label pb-0">Screenshot URL (Of Trackers)</label>
+            <label for="reviewScreenshotUrl" class="col-3 col-form-label pb-0">Screenshot URL of Trackers</label>
             <div class="col">
               <input type="text" class="form-control" name="reviewScreenshotUrl" placeholder="Enter ScreenshotUrl" value="{{ review.screenshotUrl }}">
             </div>
