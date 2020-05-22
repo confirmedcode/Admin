@@ -111,6 +111,9 @@
             <p class="col-3 my-0 py-0">📞 Phone Number</p>
             <p class="col-3 my-0 py-0">🖼 Photos</p>
             <p class="col-3 my-0 py-0">📍 Location</p>
+            <p class="col-3 my-0 py-0">🏠 Physical Address</p>
+            <p class="col-3 my-0 py-0">💳 Financial Info</p>
+            <p class="col-3 my-0 py-0">🏥 Health Data</p>
           </div>
         
           <div class="form-group row mb-0 pb-2">
@@ -125,38 +128,6 @@
                 <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
                 <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
                 <input type="text" class="form-control" name="reviewDataRequiredInfo[]" placeholder="Enter DataRequiredInfo">
-              </fieldset>
-            </div>
-          </div>
-        
-          <div class="form-group row mb-0 pb-2">
-            <label for="reviewDataRequiredAccess" class="col-3 col-form-label pb-0">Required Access</label>
-            <div class="col">
-              <fieldset>
-                {{#each review.dataRequiredAccess}}
-                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess" value="{{ this }}">
-                {{/each}}
-                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
-                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
-                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
-                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
-                <input type="text" class="form-control" name="reviewDataRequiredAccess[]" placeholder="Enter DataRequiredAccess">
-              </fieldset>
-            </div>
-          </div>
-        
-          <div class="form-group row mb-0 pb-2">
-            <label for="reviewDataOptional" class="col-3 col-form-label pb-0">Data - Optional</label>
-            <div class="col">
-              <fieldset>
-                {{#each review.dataOptional}}
-                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional" value="{{ this }}">
-                {{/each}}
-                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
-                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
-                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
-                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
-                <input type="text" class="form-control" name="reviewDataOptional[]" placeholder="Enter DataOptional">
               </fieldset>
             </div>
           </div>

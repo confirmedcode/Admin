@@ -80,8 +80,6 @@ router.post("/save-review",
     .not().isEmpty().withMessage("Missing IconUrl."),
   body("reviewDisclaimer"),
   body("reviewDataRequiredInfo"),
-  body("reviewDataRequiredAccess"),
-  body("reviewDataOptional"),
   body("reviewScreenshotUrl"),
   body("reviewTestMethod")
     .exists().withMessage("Missing reviewTestMethod.")
@@ -124,13 +122,7 @@ router.post("/save-review",
   const disclaimer = request.values.reviewDisclaimer
   const dataRequiredInfo = request.values.reviewDataRequiredInfo.filter(function (el) { 
     return el != null && el != "";
-  }); 
-  const dataRequiredAccess = request.values.reviewDataRequiredAccess.filter(function (el) { 
-    return el != null && el != "";
-  }); 
-  const dataOptional = request.values.reviewDataOptional.filter(function (el) { 
-    return el != null && el != "";
-  }); 
+  });
   const screenshotUrl = request.values.reviewScreenshotUrl
   const testMethod = request.values.reviewTestMethod
   const testDescription = request.values.reviewTestDescription
@@ -150,7 +142,7 @@ router.post("/save-review",
   // check if we're creating new review, or updating existing review
   if (id == false) {
     p = p.then( result => {
-      return Review.create(name, displayName, tagline, numAttempts, rating, date, platforms, ranking, iconUrl, disclaimer, dataRequiredInfo, dataRequiredAccess, dataOptional, screenshotUrl, testMethod, testDescription, testOpen, testConsent, testBackground, testNotes, summaryUrl, published, trackerNames);
+      return Review.create(name, displayName, tagline, numAttempts, rating, date, platforms, ranking, iconUrl, disclaimer, dataRequiredInfo, screenshotUrl, testMethod, testDescription, testOpen, testConsent, testBackground, testNotes, summaryUrl, published, trackerNames);
     })
     .then( review => {
       id = review.id;
@@ -159,7 +151,7 @@ router.post("/save-review",
   }
   else {
     p = p.then( result => {
-      return Review.update(id, name, displayName, tagline, numAttempts, rating, date, platforms, ranking, iconUrl, disclaimer, dataRequiredInfo, dataRequiredAccess, dataOptional, screenshotUrl, testMethod, testDescription, testOpen, testConsent, testBackground, testNotes, summaryUrl, published, trackerNames);
+      return Review.update(id, name, displayName, tagline, numAttempts, rating, date, platforms, ranking, iconUrl, disclaimer, dataRequiredInfo, screenshotUrl, testMethod, testDescription, testOpen, testConsent, testBackground, testNotes, summaryUrl, published, trackerNames);
     });
   }
 
