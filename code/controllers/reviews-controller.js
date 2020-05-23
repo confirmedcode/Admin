@@ -71,6 +71,9 @@ router.post("/save-review",
   body("reviewRating")
     .exists().withMessage("Missing rating.")
     .not().isEmpty().withMessage("Missing rating."),
+  body("reviewRatingReason")
+    .exists().withMessage("Missing rating reason.")
+    .not().isEmpty().withMessage("Missing rating reason."),
   body("reviewPlatforms")
     .exists().withMessage("Missing platforms.")
     .not().isEmpty().withMessage("Missing platforms."),
@@ -93,12 +96,8 @@ router.post("/save-review",
   body("reviewTestConsent")
     .exists().withMessage("Missing reviewTestConsent.")
     .not().isEmpty().withMessage("Missing reviewTestConsent."),
-  body("reviewTestBackground")
-    .exists().withMessage("Missing reviewTestBackground.")
-    .not().isEmpty().withMessage("Missing reviewTestBackground."),
-  body("reviewTestNotes")
-    .exists().withMessage("Missing reviewTestNotes.")
-    .not().isEmpty().withMessage("Missing reviewTestNotes."),
+  body("reviewTestBackground"),
+  body("reviewTestNotes"),
   body("reviewSummaryUrl"),
   body("reviewPublished")
     .exists().withMessage("Missing reviewPublished.")
@@ -115,6 +114,7 @@ router.post("/save-review",
   const tagline = request.values.reviewTagline;
   const numAttempts = request.values.reviewNumAttempts
   const rating = request.values.reviewRating
+  const ratingReason = request.values.reviewRatingReason
   const date = new Date()
   const platforms = request.values.reviewPlatforms
   const ranking = request.values.reviewRanking
@@ -142,7 +142,7 @@ router.post("/save-review",
   // check if we're creating new review, or updating existing review
   if (id == false) {
     p = p.then( result => {
-      return Review.create(name, displayName, tagline, numAttempts, rating, date, platforms, ranking, iconUrl, disclaimer, dataRequiredInfo, screenshotUrl, testMethod, testDescription, testOpen, testConsent, testBackground, testNotes, summaryUrl, published, trackerNames);
+      return Review.create(name, displayName, tagline, numAttempts, rating, ratingReason, date, platforms, ranking, iconUrl, disclaimer, dataRequiredInfo, screenshotUrl, testMethod, testDescription, testOpen, testConsent, testBackground, testNotes, summaryUrl, published, trackerNames);
     })
     .then( review => {
       id = review.id;
@@ -151,7 +151,7 @@ router.post("/save-review",
   }
   else {
     p = p.then( result => {
-      return Review.update(id, name, displayName, tagline, numAttempts, rating, date, platforms, ranking, iconUrl, disclaimer, dataRequiredInfo, screenshotUrl, testMethod, testDescription, testOpen, testConsent, testBackground, testNotes, summaryUrl, published, trackerNames);
+      return Review.update(id, name, displayName, tagline, numAttempts, rating, ratingReason, date, platforms, ranking, iconUrl, disclaimer, dataRequiredInfo, screenshotUrl, testMethod, testDescription, testOpen, testConsent, testBackground, testNotes, summaryUrl, published, trackerNames);
     });
   }
 
