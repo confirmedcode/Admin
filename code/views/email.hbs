@@ -1,0 +1,178 @@
+{{> header title="Admin" }}
+
+<link href="/css/tabulator.min.css" rel="stylesheet" />
+
+<body class="text-center">
+  
+  {{> nav }}
+  
+  <div class="container-fluid mt-3">
+    <div class="col text-left">
+      
+      {{> flash }}
+      
+      <div class="row mt-3 mb-3">
+        <a href="/admin" class="btn confirmed-blue-btn btn-sm">Back to Admin</a>
+      </div>
+      
+      <div class="row mt-3">
+        <div class="col-12">
+          <h3 class="text-center"><strong>Email</strong></h3>
+        </div>
+        <div class="col-12">
+          <div class="container-fluid mt-1 p-3 rounded confirmed-bg">
+            <h3>{{bounces}} Bounces</h3>
+            <div id="bouncesTable"></div>
+            <button id="fetchBouncesButton" onclick="fetchBounces();" class="btn confirmed-blue-btn btn-sm mt-2">Fetch 10</button>
+            <button id="deleteBouncesButton" onclick="deleteBounces();" class="btn confirmed-blue-btn btn-sm mt-2">Delete Shown</button>
+          </div>
+        </div>
+        <div class="col-12 mt-3">
+          <div class="container-fluid mt-1 p-3 rounded confirmed-bg">
+            <h3>{{complaints}} Complaints</h3>
+            <div id="complaintsTable"></div>
+            <button id="fetchComplaintsButton" onclick="fetchComplaints();" class="btn confirmed-blue-btn btn-sm mt-2">Fetch 10</button>
+            <button id="deleteComplaintsButton" onclick="deleteComplaints();" class="btn confirmed-blue-btn btn-sm mt-2">Delete Shown</button>
+          </div>
+        </div>
+
+      </div>
+  
+    </div> <!-- column -->
+  </div> <!-- row -->
+  
+  {{> footer}}
+
+  {{> bootstrapjs}}
+  
+  <script>
+    
+    var shownBouncesIds = [];
+    var shownBouncesHandles = [];
+    
+    function fetchBounces() {
+      var http = new XMLHttpRequest();
+      var url = "fetch-bounces";
+      http.open("POST", url, true);
+      http.responseType = 'json';
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.onreadystatechange = function() {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            new Tabulator("#bouncesTable", {
+              data: http.response.message,
+              columns: [
+                { title: "time", field: "timestamp" },
+                { title: "sendTime", field: "sendTime" },
+                { title: "sender", field: "sender" },
+                { title: "recipient", field: "rEmail" },
+                { title: "type", field: "bounceType" },
+                { title: "subType", field: "bounceSubType" },
+                { title: "action", field: "rAction" },
+                { title: "status", field: "rStatus" },
+                { title: "code", field: "rCode" },
+                { title: "messageId", field: "id" },
+                { title: "receiptHandle", field: "receiptHandle" },
+              ]
+            });
+            shownBouncesIds = [];
+            shownBouncesHandles = [];
+            http.response.message.forEach(message => {
+              shownBouncesIds.push(message.id);
+              shownBouncesHandles.push(message.receiptHandle);
+            });
+            return;
+          }
+          alert("Error: " + JSON.stringify(http.response));
+        }
+      }
+      http.send();
+    }
+    
+    function deleteBounces() {
+      var http = new XMLHttpRequest();
+      var url = "delete-queue-messages";
+      http.open("POST", url, true);
+      var params = "type=Bounces" + "&ids=" + encodeURIComponent(JSON.stringify(shownBouncesIds)) + "&receiptHandles=" + encodeURIComponent(JSON.stringify(shownBouncesHandles));
+      http.responseType = 'json';
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.onreadystatechange = function() {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            alert(JSON.stringify(http.response, null, 2))
+            shownBouncesIds = [];
+            shownBouncesHandles = [];
+            $( "#bouncesTable" ).empty();
+            return;
+          }
+          alert("Error: " + JSON.stringify(http.response));
+        }
+      }
+      http.send(params);
+    }
+    
+    var shownComplaintsIds = [];
+    var shownComplaintsHandles = [];
+    
+    function fetchComplaints() {
+      var http = new XMLHttpRequest();
+      var url = "fetch-complaints";
+      http.open("POST", url, true);
+      http.responseType = 'json';
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.onreadystatechange = function() {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            var table = new Tabulator("#complaintsTable", {
+              data: http.response.message,
+              columns: [
+                { title: "time", field: "timestamp" },
+                { title: "sendTime", field: "sendTime" },
+                { title: "recipient", field: "rEmail" },
+                { title: "type", field: "complaintFeedbackType" },
+                { title: "subType", field: "complaintSubType" },
+                { title: "userAgent", field: "userAgent" },
+                { title: "messageId", field: "id" },
+                { title: "receiptHandle", field: "receiptHandle" },
+              ]
+            });
+            shownComplaintsIds = [];
+            shownComplaintsHandles = [];
+            http.response.message.forEach(message => {
+              shownComplaintsIds.push(message.id);
+              shownComplaintsHandles.push(message.receiptHandle);
+            });
+            return;
+          }
+          alert("Error: " + JSON.stringify(http.response));
+        }
+      }
+      http.send();
+    }
+    
+    function deleteComplaints() {
+      var http = new XMLHttpRequest();
+      var url = "delete-queue-messages";
+      http.open("POST", url, true);
+      var params = "type=Complaints" + "&ids=" + encodeURIComponent(JSON.stringify(shownComplaintsIds)) + "&receiptHandles=" + encodeURIComponent(JSON.stringify(shownComplaintsHandles));
+      http.responseType = 'json';
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.onreadystatechange = function() {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            alert(JSON.stringify(http.response, null, 2))
+            shownComplaintsIds = [];
+            shownComplaintsHandles = [];
+            $( "#complaintsTable" ).empty();
+            return;
+          }
+          alert("Error: " + JSON.stringify(http.response));
+        }
+      }
+      http.send(params);
+    }
+    
+  </script>
+  
+</body>
+<script src="/js/tabulator.min.js"></script>
