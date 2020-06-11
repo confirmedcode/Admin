@@ -72,6 +72,14 @@
           </div>
         </div>
         
+        <div class="col-xl-4 col-md-6 col-xs-12 text-left p-3 confirmed-bg">
+          <h1 class="h6 text-center"><strong>Generate Users (DEV Environment ONLY)</strong></h1>
+          <div>
+            <input type="text" id="generateUsersNum" class="form-control"/>
+            <button id="generateUsersButton" onclick="generateUsers();" class="btn confirmed-blue-btn btn-sm mt-2" style="width: 49%;">Submit</button>
+          </div>
+        </div>
+        
       </div>
     
       <div class="col-xl-6 offset-xl-3 col-xs-12 text-left mb-5">
@@ -89,6 +97,25 @@
   {{> bootstrapjs}}
   
   <script>
+    
+    function generateUsers() {
+      var http = new XMLHttpRequest();
+      var url = "generate-users";
+      http.open("POST", url, true);
+      var params = "num=" + encodeURIComponent(document.getElementById("generateUsersNum").value);
+      http.responseType = 'json';
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.onreadystatechange = function() {
+          if (http.readyState == 4) {
+            if (http.status == 200) {
+              alert(http.response.message);
+              return;
+            }
+            alert("Error: " + JSON.stringify(http.response));
+          }
+      }
+      http.send(params);
+    }
     
     function deleteUserWithEmail() {
       if (confirm("This will send an email to alert the customer that you're deleting their account and cancelling their subscriptions. Proceed?")) {

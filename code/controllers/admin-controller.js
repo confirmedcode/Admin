@@ -15,6 +15,7 @@ const { ClientFile } = require("shared/models");
 // Utilities
 const { Database } = require("shared/utilities");
 const { Email } = require("shared/utilities");
+const { Secure } = require("shared/utilities");
 const multer = require("multer");
 const upload = multer({ dest : "../uploads" });
 const aws = require("aws-sdk");
@@ -233,6 +234,49 @@ router.post("/delete-user-with-id",
       });
     })
     .catch(error => { next(error); });
+});
+
+/*********************************************
+ *
+ * Generate Users
+ *
+ *********************************************/
+
+router.post("/generate-users",
+[
+  authenticate,
+  body("num")
+    .exists().withMessage("Missing num."),
+  validateCheck
+],
+(request, response, next) => {
+  
+  var num = request.values.num;
+  
+  Email.sendAdminAlert("ADMIN ACTION", "Generate Users By " + request.user.email);
+  
+  let chain = Promise.resolve();
+  let count = 0;
+  for (var i = 0; i < num; i++) {
+    chain = chain
+      .then(() => {
+        count = count + 1;
+        var email = `success+${Secure.randomString(15)}@simulator.amazonses.com`;
+        Logger.info("Generating user #" + count + " email: " + email);
+        return User.createWithEmailAndPassword(email, "TestPass!123", false, null, true)
+        .then(user => {
+          return User.confirmEmail(user.emailConfirmCode, email);
+        })
+        .catch(error => { 
+          Logger.error("error: " + JSON.stringify(error));
+        });
+      })
+  }
+  
+  response.status(200).json({
+    message: "queued"
+  })
+
 });
 
 /*********************************************
