@@ -15,9 +15,10 @@ const nodemailer = require('nodemailer');
 const aws = require("aws-sdk");
 const transporter = nodemailer.createTransport({
   SES: new aws.SES({
-    apiVersion: '2010-12-01'
+    apiVersion: '2010-12-01',
+    region: "us-east-1"
   }),
-  sendingRate: 13 // max 10 messages/second
+  sendingRate: 13 // max 13 messages/second
 });
 const sqs = new aws.SQS();
 const sts = new aws.STS();
