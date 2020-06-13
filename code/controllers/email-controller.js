@@ -227,7 +227,7 @@ router.post("/send-emails-to-campaign",
       })
       .then(result => {
         successCount = successCount + 1;
-        Logger.info("successfully sent email #" + successCount + " - envelope: " + result.envelope.to);
+        Logger.info("successfully sent email #" + successCount);
       })
       .catch(error => {
         // set as failed in DB but continue
