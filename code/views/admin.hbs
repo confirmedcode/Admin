@@ -80,6 +80,17 @@
           </div>
         </div>
         
+        <div class="col-xl-4 col-md-6 col-xs-12 text-left p-3 confirmed-bg">
+          <h1 class="h6 text-center"><strong>Do Not Email</strong></h1>
+          <div>
+            <input type="text" id="doNotEmailEmail" class="form-control" placeholder="test@test.com"/>
+            <button onclick="document.getElementById('doNotEmailEmail').value='';" class="btn confirmed-gray-btn btn-sm mt-2" style="width: 49%;">Clear</button>
+            <button id="doNotEmailButton" onclick="doNotEmail();" class="btn confirmed-blue-btn btn-sm mt-2" style="width: 49%;">Submit</button>
+            <input type="text" id="doNotEmailResult" class="form-control mt-2" placeholder="Result Appears Here" readonly="readonly"/>
+          </div>
+        </div>
+        
+        
       </div>
     
       <div class="col-xl-6 offset-xl-3 col-xs-12 text-left mb-5">
@@ -163,6 +174,28 @@
     		}
     		http.send(params);
       }
+    }
+    
+    function doNotEmail() {
+      document.getElementById("doNotEmailButton").disabled = true;
+      document.getElementById("doNotEmailResult").value = "";
+  		var http = new XMLHttpRequest();
+  		var url = "set-do-not-email";
+  		http.open("POST", url, true);
+    	var params = "email=" + document.getElementById("doNotEmailEmail").value;
+      http.responseType = 'json';
+  		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  		http.onreadystatechange = function() {
+  		    if (http.readyState == 4) {
+            document.getElementById("doNotEmailButton").disabled = false;
+    				if (http.status == 200) {
+              document.getElementById("doNotEmailResult").value = http.response.message;
+              return;
+    				}
+            alert("Error: " + JSON.stringify(http.response));
+  		    }
+  		}
+  		http.send(params);
     }
 
   </script>

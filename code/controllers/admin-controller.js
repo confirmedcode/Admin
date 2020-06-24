@@ -161,6 +161,38 @@ authenticate,
 
 /*********************************************
  *
+ * Email Opt Out User
+ *
+ *********************************************/
+
+router.post("/set-do-not-email",
+[
+  authenticate,
+  body("email")
+  .exists().withMessage("Missing email address.")
+  .isEmail().withMessage("Invalid email address.")
+  .normalizeEmail({
+      gmail_remove_dots: false
+    }),
+  validateCheck
+],
+(request, response, next) => {
+  var email = request.values.email;
+  // Check that we do have this email in the database
+  return User.getWithEmail(email)
+    .then(user => {
+      return User.setDoNotEmail(email, user.doNotEmailCode);
+    })
+    .then(success => {
+      response.status(200).json({
+        message: "Do not email set successfully."
+      });
+    })
+    .catch(error => { next(error); });
+});
+
+/*********************************************
+ *
  * Delete User
  *
  *********************************************/
