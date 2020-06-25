@@ -87,7 +87,7 @@ router.post("/campaign-stats",
   var id = request.values.id;
   
   // Notify Admin
-  Email.sendAdminAlert("ADMIN ACTION", "Get Campaign Stats By " + request.user.email);
+  //Email.sendAdminAlert("ADMIN ACTION", "Get Campaign Stats By " + request.user.email);
   
   return Campaign.getStats(id)
   .then( stats => {
@@ -248,7 +248,7 @@ router.post("/fetch-bounces",
 (request, response, next) => {
   
   // Notify Admin
-  Email.sendAdminAlert("ADMIN ACTION", "Fetch Bounces By " + request.user.email);
+  //Email.sendAdminAlert("ADMIN ACTION", "Fetch Bounces By " + request.user.email);
   
   sqs.receiveMessage({
     QueueUrl: `https://sqs.${QUEUE_REGION}.amazonaws.com/${accountId}/${ENVIRONMENT}-BouncesQueue`,
@@ -296,7 +296,7 @@ router.post("/fetch-complaints",
 (request, response, next) => {
   
   // Notify Admin
-  Email.sendAdminAlert("ADMIN ACTION", "Fetch Complaints By " + request.user.email);
+  //Email.sendAdminAlert("ADMIN ACTION", "Fetch Complaints By " + request.user.email);
   
   sqs.receiveMessage({
     QueueUrl: `https://sqs.${QUEUE_REGION}.amazonaws.com/${accountId}/${ENVIRONMENT}-ComplaintsQueue`,
@@ -351,7 +351,7 @@ router.post("/delete-queue-messages",
   const receiptHandles = JSON.parse(request.values.receiptHandles);
   
   // Notify Admin
-  Email.sendAdminAlert("ADMIN ACTION", "Delete Queue Messages By " + request.user.email);
+  //Email.sendAdminAlert("ADMIN ACTION", "Delete Queue Messages By " + request.user.email);
   
   var entries = [];
   ids.forEach( (id, index) => {
