@@ -131,6 +131,41 @@ router.post("/create-campaign",
   .catch(error => { next(error); });
 });
 
+router.post("/create-campaign-nonsubscribed",
+[
+  authenticate,
+  body("name")
+    .exists().withMessage("Missing name."),
+  body("fromAddress")
+    .exists().withMessage("Missing fromAddress."),
+  body("subject")
+    .exists().withMessage("Missing subject."),
+  body("html")
+    .exists().withMessage("Missing html."),
+  body("plaintext")
+    .exists().withMessage("Missing plain."),
+  validateCheck
+],
+(request, response, next) => {
+  
+  var name = request.values.name;
+  var fromAddress = request.values.fromAddress;
+  var subject = request.values.subject;
+  var html = request.values.html;
+  var plaintext = request.values.plaintext;
+  
+  // Notify Admin
+  Email.sendAdminAlert("ADMIN ACTION", "Created Campaign By " + request.user.email);
+  
+  return Campaign.createNonSubscribed(name, fromAddress, subject, html, plaintext)
+  .then( info => {
+    return response.status(200).json({
+      message: "success"
+    });
+  })
+  .catch(error => { next(error); });
+});
+
 router.post("/send-single-email",
 [
   authenticate,

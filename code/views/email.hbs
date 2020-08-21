@@ -94,6 +94,20 @@
               <input type="text" id="newCampaignSubject"/><br/>
               <button onclick="newCampaign();" class="btn confirmed-blue-btn btn-sm mt-2">Create</button>
             </div>
+            <div class="mt-3">
+              <h3>New Campaign (Non-Subscribed Emails Only)</h3>
+              Name<br/>
+              <input type="text" id="newCampaignNonSubscribedName"/><br>
+              HTML<br/>
+              <textarea type="text" id="newCampaignNonSubscribedHTML" class="w-100"></textarea><br/>
+              Plain Text<br/>
+              <textarea type="text" id="newCampaignNonSubscribedPlainText" class="w-100"></textarea><br/>
+              From Address<br/>
+              <input type="text" id="newCampaignNonSubscribedFromAddress"/><br/>
+              Subject<br/>
+              <input type="text" id="newCampaignNonSubscribedSubject"/><br/>
+              <button onclick="newCampaignNonSubscribed();" class="btn confirmed-blue-btn btn-sm mt-2">Create</button>
+            </div>
           </div>
         </div>
 
@@ -138,6 +152,29 @@
                   + "&plaintext=" + encodeURIComponent(document.getElementById("newCampaignPlainText").value)
                   + "&fromAddress=" + encodeURIComponent(document.getElementById("newCampaignFromAddress").value)
                   + "&subject=" + encodeURIComponent(document.getElementById("newCampaignSubject").value)
+      http.responseType = 'json';
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.onreadystatechange = function() {
+          if (http.readyState == 4) {
+            if (http.status == 200) {
+              location.reload();
+              return;
+            }
+            alert("Error: " + JSON.stringify(http.response));
+          }
+      }
+      http.send(params);
+    }
+    
+    function newCampaignNonSubscribed() {
+      var http = new XMLHttpRequest();
+      var url = "create-campaign-nonsubscribed";
+      http.open("POST", url, true);
+      var params = "name=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedName").value)
+                  + "&html=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedHTML").value)
+                  + "&plaintext=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedPlainText").value)
+                  + "&fromAddress=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedFromAddress").value)
+                  + "&subject=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedSubject").value)
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       http.onreadystatechange = function() {
