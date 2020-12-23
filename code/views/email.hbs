@@ -3,18 +3,18 @@
 <link href="/css/tabulator.min.css" rel="stylesheet" />
 
 <body class="text-center">
-  
+
   {{> nav }}
-  
+
   <div class="container-fluid mt-3 mb-5 pb-4">
     <div class="col text-left">
-      
+
       {{> flash }}
-      
+
       <div class="row mt-3 mb-3">
         <a href="/admin" class="btn confirmed-blue-btn btn-sm">Back to Admin</a>
       </div>
-      
+
       <div class="row mt-3">
         <div class="col-12">
           <h3 class="text-center"><strong>Email</strong></h3>
@@ -23,27 +23,32 @@
           <div class="container-fluid mt-1 p-3 rounded confirmed-bg">
             <h3>{{bounces}} Bounces</h3>
             <div id="bouncesTable"></div>
-            <button id="fetchBouncesButton" onclick="fetchBounces();" class="btn confirmed-blue-btn btn-sm mt-2">Fetch 10</button>
-            <button id="deleteBouncesButton" onclick="deleteBounces();" class="btn confirmed-blue-btn btn-sm mt-2">Delete Shown</button>
+            <button id="fetchBouncesButton" onclick="fetchBounces();" class="btn confirmed-blue-btn btn-sm mt-2">Fetch
+              10</button>
+            <button id="deleteBouncesButton" onclick="deleteBounces();"
+              class="btn confirmed-blue-btn btn-sm mt-2">Delete Shown</button>
           </div>
         </div>
         <div class="col-12 mt-3">
           <div class="container-fluid mt-1 p-3 rounded confirmed-bg">
             <h3>{{complaints}} Complaints</h3>
             <div id="complaintsTable"></div>
-            <button id="fetchComplaintsButton" onclick="fetchComplaints();" class="btn confirmed-blue-btn btn-sm mt-2">Fetch 10</button>
-            <button id="deleteComplaintsButton" onclick="deleteComplaints();" class="btn confirmed-blue-btn btn-sm mt-2">Delete Shown</button>
+            <button id="fetchComplaintsButton" onclick="fetchComplaints();"
+              class="btn confirmed-blue-btn btn-sm mt-2">Fetch 10</button>
+            <button id="deleteComplaintsButton" onclick="deleteComplaints();"
+              class="btn confirmed-blue-btn btn-sm mt-2">Delete Shown</button>
           </div>
         </div>
-        
+
         <div class="col-12 mt-3">
           <div class="container-fluid mt-1 p-3 rounded confirmed-bg">
             <h3>Send Single Email</h3>
-            Campaign ID<br/>
-            <input type="text" id="sendSingleEmailCampaignId"/><br/>
-            To Address<br/>
-            <input type="text" id="sendSingleEmailToAddress"/><br/>
-            <button id="sendSingleEmailButton" onclick="sendSingleEmail();" class="btn confirmed-blue-btn btn-sm mt-3 ">Send Single Email</button>
+            Campaign ID<br />
+            <input type="text" id="sendSingleEmailCampaignId" /><br />
+            To Address<br />
+            <input type="text" id="sendSingleEmailToAddress" /><br />
+            <button id="sendSingleEmailButton" onclick="sendSingleEmail();"
+              class="btn confirmed-blue-btn btn-sm mt-3 ">Send Single Email</button>
           </div>
         </div>
 
@@ -57,7 +62,8 @@
               <br>
               Last Sent: {{this.lastSentDate}}
               <br>
-              Total: <span id="campaignTotal-{{this.id}}">__</span> | Sent: <span id="campaignSent-{{this.id}}">__</span> | Failed: <span id="campaignFailed-{{this.id}}">__</span>
+              Total: <span id="campaignTotal-{{this.id}}">__</span> | Sent: <span
+                id="campaignSent-{{this.id}}">__</span> | Failed: <span id="campaignFailed-{{this.id}}">__</span>
               <button onclick="getStats({{this.id}});" class="btn confirmed-blue-btn btn-sm">Get Stats</button>
               <br>
               From: {{this.fromAddress}}
@@ -73,55 +79,64 @@
             {{/each}}
             <div class="mt-3">
               <h3>Send Emails To Campaign</h3>
-              Campaign ID<br/>
-              <input type="text" id="sendEmailsCampaignId"/><br/>
-              Max Number of Emails<br/>
-              <input type="text" id="sendEmailsMaxNum"/><br/>
+              Campaign ID<br />
+              <input type="text" id="sendEmailsCampaignId" /><br />
+              Max Number of Emails<br />
+              <input type="text" id="sendEmailsMaxNum" /><br />
               <button onclick="sendEmailsToCampaign();" class="btn confirmed-blue-btn btn-sm mt-2">Send</button>
               <hr>
             </div>
             <div class="mt-3">
+              <h3>Send Emails To Campaign Reverse</h3>
+              Campaign ID<br />
+              <input type="text" id="sendEmailsCampaignIdReverse" /><br />
+              Max Number of Emails<br />
+              <input type="text" id="sendEmailsMaxNumReverse" /><br />
+              <button onclick="sendEmailsToCampaignReverse();" class="btn confirmed-blue-btn btn-sm mt-2">Send</button>
+              <hr>
+            </div>
+            <div class="mt-3">
               <h3>New Campaign</h3>
-              Name<br/>
-              <input type="text" id="newCampaignName"/><br>
-              HTML<br/>
-              <textarea type="text" id="newCampaignHTML" class="w-100"></textarea><br/>
-              Plain Text<br/>
-              <textarea type="text" id="newCampaignPlainText" class="w-100"></textarea><br/>
-              From Address<br/>
-              <input type="text" id="newCampaignFromAddress"/><br/>
-              Subject<br/>
-              <input type="text" id="newCampaignSubject"/><br/>
+              Name<br />
+              <input type="text" id="newCampaignName" /><br>
+              HTML<br />
+              <textarea type="text" id="newCampaignHTML" class="w-100"></textarea><br />
+              Plain Text<br />
+              <textarea type="text" id="newCampaignPlainText" class="w-100"></textarea><br />
+              From Address<br />
+              <input type="text" id="newCampaignFromAddress" /><br />
+              Subject<br />
+              <input type="text" id="newCampaignSubject" /><br />
               <button onclick="newCampaign();" class="btn confirmed-blue-btn btn-sm mt-2">Create</button>
             </div>
             <div class="mt-3">
               <h3>New Campaign (Non-Subscribed Emails Only)</h3>
-              Name<br/>
-              <input type="text" id="newCampaignNonSubscribedName"/><br>
-              HTML<br/>
-              <textarea type="text" id="newCampaignNonSubscribedHTML" class="w-100"></textarea><br/>
-              Plain Text<br/>
-              <textarea type="text" id="newCampaignNonSubscribedPlainText" class="w-100"></textarea><br/>
-              From Address<br/>
-              <input type="text" id="newCampaignNonSubscribedFromAddress"/><br/>
-              Subject<br/>
-              <input type="text" id="newCampaignNonSubscribedSubject"/><br/>
+              Name<br />
+              <input type="text" id="newCampaignNonSubscribedName" /><br>
+              HTML<br />
+              <textarea type="text" id="newCampaignNonSubscribedHTML" class="w-100"></textarea><br />
+              Plain Text<br />
+              <textarea type="text" id="newCampaignNonSubscribedPlainText" class="w-100"></textarea><br />
+              From Address<br />
+              <input type="text" id="newCampaignNonSubscribedFromAddress" /><br />
+              Subject<br />
+              <input type="text" id="newCampaignNonSubscribedSubject" /><br />
               <button onclick="newCampaignNonSubscribed();" class="btn confirmed-blue-btn btn-sm mt-2">Create</button>
             </div>
           </div>
         </div>
 
       </div>
-  
+
     </div> <!-- column -->
   </div> <!-- row -->
-  
+
   {{> footer}}
 
   {{> bootstrapjs}}
-  
+
   <script>
-    
+
     function getStats(id) {
       var http = new XMLHttpRequest();
       var url = "campaign-stats";
@@ -129,116 +144,136 @@
       var params = "id=" + id;
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
-          if (http.readyState == 4) {
-            if (http.status == 200) {
-              $("#campaignTotal-" + id).text(http.response.total);
-              $("#campaignSent-" + id).text(http.response.sent);
-              $("#campaignFailed-" + id).text(http.response.failed);
-              return;
-            }
-            alert("Error: " + JSON.stringify(http.response));
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            $("#campaignTotal-" + id).text(http.response.total);
+            $("#campaignSent-" + id).text(http.response.sent);
+            $("#campaignFailed-" + id).text(http.response.failed);
+            return;
           }
+          alert("Error: " + JSON.stringify(http.response));
+        }
       }
       http.send(params);
     }
-    
+
     function newCampaign() {
       var http = new XMLHttpRequest();
       var url = "create-campaign";
       http.open("POST", url, true);
       var params = "name=" + encodeURIComponent(document.getElementById("newCampaignName").value)
-                  + "&html=" + encodeURIComponent(document.getElementById("newCampaignHTML").value)
-                  + "&plaintext=" + encodeURIComponent(document.getElementById("newCampaignPlainText").value)
-                  + "&fromAddress=" + encodeURIComponent(document.getElementById("newCampaignFromAddress").value)
-                  + "&subject=" + encodeURIComponent(document.getElementById("newCampaignSubject").value)
+        + "&html=" + encodeURIComponent(document.getElementById("newCampaignHTML").value)
+        + "&plaintext=" + encodeURIComponent(document.getElementById("newCampaignPlainText").value)
+        + "&fromAddress=" + encodeURIComponent(document.getElementById("newCampaignFromAddress").value)
+        + "&subject=" + encodeURIComponent(document.getElementById("newCampaignSubject").value)
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
-          if (http.readyState == 4) {
-            if (http.status == 200) {
-              location.reload();
-              return;
-            }
-            alert("Error: " + JSON.stringify(http.response));
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            location.reload();
+            return;
           }
+          alert("Error: " + JSON.stringify(http.response));
+        }
       }
       http.send(params);
     }
-    
+
     function newCampaignNonSubscribed() {
       var http = new XMLHttpRequest();
       var url = "create-campaign-nonsubscribed";
       http.open("POST", url, true);
       var params = "name=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedName").value)
-                  + "&html=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedHTML").value)
-                  + "&plaintext=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedPlainText").value)
-                  + "&fromAddress=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedFromAddress").value)
-                  + "&subject=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedSubject").value)
+        + "&html=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedHTML").value)
+        + "&plaintext=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedPlainText").value)
+        + "&fromAddress=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedFromAddress").value)
+        + "&subject=" + encodeURIComponent(document.getElementById("newCampaignNonSubscribedSubject").value)
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
-          if (http.readyState == 4) {
-            if (http.status == 200) {
-              location.reload();
-              return;
-            }
-            alert("Error: " + JSON.stringify(http.response));
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            location.reload();
+            return;
           }
+          alert("Error: " + JSON.stringify(http.response));
+        }
       }
       http.send(params);
     }
-    
+
     function sendSingleEmail() {
       var http = new XMLHttpRequest();
       var url = "send-single-email";
       http.open("POST", url, true);
       var params = "campaignId=" + encodeURIComponent(document.getElementById("sendSingleEmailCampaignId").value)
-                  + "&toAddress=" + encodeURIComponent(document.getElementById("sendSingleEmailToAddress").value)
+        + "&toAddress=" + encodeURIComponent(document.getElementById("sendSingleEmailToAddress").value)
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
-          if (http.readyState == 4) {
-            if (http.status == 200) {
-              alert(http.response.message);
-              return;
-            }
-            alert("Error: " + JSON.stringify(http.response));
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            alert(http.response.message);
+            return;
           }
+          alert("Error: " + JSON.stringify(http.response));
+        }
       }
       http.send(params);
     }
-    
+
     function sendEmailsToCampaign() {
       var http = new XMLHttpRequest();
       var url = "send-emails-to-campaign";
       http.open("POST", url, true);
       var params = "campaignId=" + encodeURIComponent(document.getElementById("sendEmailsCampaignId").value)
-                  + "&maxNum=" + encodeURIComponent(document.getElementById("sendEmailsMaxNum").value);
+        + "&maxNum=" + encodeURIComponent(document.getElementById("sendEmailsMaxNum").value);
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
-          if (http.readyState == 4) {
-            if (http.status == 200) {
-              alert(http.response.message);
-              return;
-            }
-            alert("Error: " + JSON.stringify(http.response));
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            alert(http.response.message);
+            return;
           }
+          alert("Error: " + JSON.stringify(http.response));
+        }
       }
       http.send(params);
     }
-    
+
+    function sendEmailsToCampaignReverse() {
+      var http = new XMLHttpRequest();
+      var url = "send-emails-to-campaign-reverse";
+      http.open("POST", url, true);
+      var params = "campaignId=" + encodeURIComponent(document.getElementById("sendEmailsCampaignIdReverse").value)
+        + "&maxNum=" + encodeURIComponent(document.getElementById("sendEmailsMaxNumReverse").value);
+      http.responseType = 'json';
+      http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      http.onreadystatechange = function () {
+        if (http.readyState == 4) {
+          if (http.status == 200) {
+            alert(http.response.message);
+            return;
+          }
+          alert("Error: " + JSON.stringify(http.response));
+        }
+      }
+      http.send(params);
+    }
+
     var shownBouncesIds = [];
     var shownBouncesHandles = [];
-    
+
     function fetchBounces() {
       var http = new XMLHttpRequest();
       var url = "fetch-bounces";
       http.open("POST", url, true);
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
+      http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.status == 200) {
             new Tabulator("#bouncesTable", {
@@ -270,7 +305,7 @@
       }
       http.send();
     }
-    
+
     function deleteBounces() {
       var http = new XMLHttpRequest();
       var url = "delete-queue-messages";
@@ -278,13 +313,13 @@
       var params = "type=Bounces" + "&ids=" + encodeURIComponent(JSON.stringify(shownBouncesIds)) + "&receiptHandles=" + encodeURIComponent(JSON.stringify(shownBouncesHandles));
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
+      http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.status == 200) {
             alert(JSON.stringify(http.response, null, 2))
             shownBouncesIds = [];
             shownBouncesHandles = [];
-            $( "#bouncesTable" ).empty();
+            $("#bouncesTable").empty();
             return;
           }
           alert("Error: " + JSON.stringify(http.response));
@@ -292,17 +327,17 @@
       }
       http.send(params);
     }
-    
+
     var shownComplaintsIds = [];
     var shownComplaintsHandles = [];
-    
+
     function fetchComplaints() {
       var http = new XMLHttpRequest();
       var url = "fetch-complaints";
       http.open("POST", url, true);
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
+      http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.status == 200) {
             var table = new Tabulator("#complaintsTable", {
@@ -332,7 +367,7 @@
       }
       http.send();
     }
-    
+
     function deleteComplaints() {
       var http = new XMLHttpRequest();
       var url = "delete-queue-messages";
@@ -340,13 +375,13 @@
       var params = "type=Complaints" + "&ids=" + encodeURIComponent(JSON.stringify(shownComplaintsIds)) + "&receiptHandles=" + encodeURIComponent(JSON.stringify(shownComplaintsHandles));
       http.responseType = 'json';
       http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      http.onreadystatechange = function() {
+      http.onreadystatechange = function () {
         if (http.readyState == 4) {
           if (http.status == 200) {
             alert(JSON.stringify(http.response, null, 2))
             shownComplaintsIds = [];
             shownComplaintsHandles = [];
-            $( "#complaintsTable" ).empty();
+            $("#complaintsTable").empty();
             return;
           }
           alert("Error: " + JSON.stringify(http.response));
@@ -354,8 +389,8 @@
       }
       http.send(params);
     }
-    
+
   </script>
-  
+
 </body>
 <script src="/js/tabulator.min.js"></script>
