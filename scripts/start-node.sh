@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export NODE_ENV=production
-
 set -x
+
+export NODE_ENV=production
 
 cd /home/node/admin
 env PATH=$PATH:/usr/local/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u node --hp /home/node
