@@ -29,9 +29,9 @@ const router = require("express").Router();
  *
  *********************************************/
 
-if (NODE_ENV === "production") {
-  var scheduledCheck = schedule.scheduleJob('0 0 * * *', snapshotEachPartner); // midnight every day, snapshot each partner
-}
+// if (NODE_ENV === "production") {
+//   var scheduledCheck = schedule.scheduleJob('0 0 * * *', snapshotEachPartner); // midnight every day, snapshot each partner
+// }
 
 function snapshotEachPartner() {
   return Partner.list()
@@ -109,7 +109,7 @@ router.post("/new-partner",
   const newPartnerTitle = request.values.newPartnerTitle;
   const newPartnerCode = request.values.newPartnerCode;
   const newPartnerPercentageShare = request.values.newPartnerPercentageShare;
-  
+
   return Partner.create(newPartnerTitle, newPartnerCode, newPartnerPercentageShare)
     .then(partner => {
       Email.sendAdminAlert("New Partner Created.",
@@ -175,7 +175,7 @@ router.post("/new-partner-user",
   const newPartnerUserEmail = request.values.newPartnerUserEmail;
   const newPartnerUserPassword = request.values.newPartnerUserPassword;
   const newPartnerUserCode = request.values.newPartnerUserCode;
-  
+
   return PartnerUser.create(newPartnerUserEmail, newPartnerUserPassword, newPartnerUserCode)
     .then(partnerUser => {
       Email.sendAdminAlert("New Partner User Created.",
@@ -200,7 +200,7 @@ router.post("/delete-partner-user",
 ],
 (request, response, next) => {
   const id = request.values.id;
-  
+
   return PartnerUser.delete(id)
     .then(partnerUser => {
       Email.sendAdminAlert("Partner User deleted.",
@@ -232,7 +232,7 @@ router.post("/current-snapshot",
 ],
 (request, response, next) => {
   const partnerCode = request.values.partnerCode;
-  
+
   return Partner.getWithCode(partnerCode)
     .then(partner => {
       return partner.getCurrentSnapshot()
@@ -256,7 +256,7 @@ router.post("/save-snapshot",
 ],
 (request, response, next) => {
   const partnerCode = request.values.partnerCode;
-  
+
   return Partner.getWithCode(partnerCode)
     .then(partner => {
       return partner.getCurrentSnapshot()
